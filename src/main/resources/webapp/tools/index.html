@@ -1,0 +1,263 @@
+{% extends "common/layout" %}
+{% block "page" %}<section class="clearfix">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="page-header">
+          <h1 id="forms">Forms</h1>
+        </div>
+        <div class="tab-form">
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#input-text">項目入力</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#input-data">長文入力</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#input-selector">選択</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#input-range">範囲</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#input-trees">Trees</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">オプション</a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" data-toggle="tab" href="#dropdown1">パータン１</a>
+                <a class="dropdown-item" data-toggle="tab" href="#dropdown2">パータン２</a>
+                <a class="dropdown-item" data-toggle="tab" href="#dropdown3">パータン３</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" data-toggle="tab" href="#dropdown4">パータン４</a>
+              </div>
+            </li>
+          </ul>
+          <form action="/home/tools/post" method="post">
+          <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade show active" id="input-text">
+              <div class="form-group">
+                <label for="exampleInputEmail1">メールアドレス</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" name="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                <small id="emailHelp" class="form-text text-muted">ここで入力したメールアドレスは公開されません</small>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">パスワード</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" name="exampleInputPassword1" placeholder="Password">
+              </div>
+
+              <div class="form-group has-success">
+                <label class="form-control-label" for="inputSuccess1">Valid input</label>
+                <input type="text" value="elichica" class="form-control is-valid" id="inputValid" name="inputValid">
+                <div class="valid-feedback">入力したIDは使用可能です</div>
+              </div>
+
+              <div class="form-group has-danger">
+                <label class="form-control-label" for="inputDanger1">Invalid input</label>
+                <input type="text" value="elichica" class="form-control is-invalid" id="inputInvalid" name="inputInvalid">
+                <div class="invalid-feedback">入力したIDは既に使用済みです</div>
+              </div>
+              <button type="submit" class="btn btn-primary">送信</button>
+            </div>
+            <div class="tab-pane fade show" id="input-data">
+              <div class="form-group">
+                <label for="exampleTextarea">テキストエリア</label>
+                <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">送信</button>
+            </div>
+            <div class="tab-pane fade" id="input-selector">
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="customSwitch1" name="customSwitch1">
+                  <label class="custom-control-label" for="customSwitch1">トグルスイッチ</label>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="input-range">
+              <div class="form-group">
+                <label for="volume">Volume</label>
+                <input type="range" class="form-control-range" list="ticklevels" id="volume" name="volume" min="0" max="100" value="70" step="10"
+                   style="width:20px; height:100px; -webkit-appearance:slider-vertical; writing-mode:bt-lr;">
+                <datalist id="ticklevels">
+                  <option value="0"></option>
+                  <option value="10"></option>
+                  <option value="20"></option>
+                  <option value="30"></option>
+                  <option value="40"></option>
+                  <option value="50"></option>
+                  <option value="60"></option>
+                  <option value="70"></option>
+                  <option value="80"></option>
+                  <option value="90"></option>
+                  <option value="100"></option>
+                </datalist>
+              </div>
+              <div class="form-group">
+                <label for="cowbell">Cowbell</label>
+                <input type="range" class="form-control-range" list="tickmarks" id="cowbell" name="cowbell" min="0" max="100" value="70" step="10">
+                <datalist id="tickmarks">
+                  <option value="0"></option>
+                  <option value="10"></option>
+                  <option value="20"></option>
+                  <option value="30"></option>
+                  <option value="40"></option>
+                  <option value="50"></option>
+                  <option value="60"></option>
+                  <option value="70"></option>
+                  <option value="80"></option>
+                  <option value="90"></option>
+                  <option value="100"></option>
+                </datalist>
+              </div>
+              <div class="form-group">
+                <label for="singleRange">Range(skin:flat)</label>
+                <input type="text" id="singleRange" name="singleRange" value="" />
+              </div>
+              <div class="form-group">
+                <label for="doubleRange">Double Range(skin:big)</label>
+                <input type="text" id="doubleRange" name="doubleRange" value="" />
+              </div>
+              <div class="form-group">
+                <label for="dateRange">Date Range(skin:round)</label>
+                <input type="text" id="dateRange" name="dateRange" value="" />
+              </div>
+              <div class="form-group">
+                <label for="modernRange">Modern Skin</label>
+                <input type="text" id="modernRange" name="modernRange" value="" />
+              </div>
+              <div class="form-group">
+                <label for="sharpRange">Sharp skin</label>
+                <input type="text" id="sharpRange" name="sharpRange" value="" />
+              </div>
+              <div class="form-group">
+                <label for="squareRange">Square skin</label>
+                <input type="text" id="squareRange" name="squareRange" value="" />
+              </div>
+            </div>
+            <div class="tab-pane fade" id="input-trees">
+              <div id="tree"></div>
+              <br/>
+            </div>
+            <div class="tab-pane fade" id="dropdown1">
+              <p>雨ニモマケズ 風ニモマケズ 雪ニモ夏ノ暑サニモマケヌ 丈夫ナカラダヲモチ 慾ハナク 決シテ瞋ラズ イツモシズカニワラッテイル 一日ニ玄米四合ト 味噌ト少シノ野菜ヲタベ アラユルコトヲ ジブンヲカンジョウニ入レズニ ヨクミキキシワカリ ソシテワスレズ</p>
+            </div>
+            <div class="tab-pane fade" id="dropdown2">
+              <p>わたくしといふ現象は 假定された有機交流電燈の ひとつの青い照明です （あらゆる透明な幽霊の複合体） 風景やみんなといっしょに せはしくせはしく明滅しながら いかにもたしかにともりつづける 因果交流電燈の ひとつの青い照明です （ひかりはたもち、その電燈は失はれ）</p>
+            </div>
+            <div class="tab-pane fade" id="dropdown3">
+              <p>「ではみなさんは、さういふふうに川だと云はれたり、乳の流れたあとだと云はれたりしてゐたこのぼんやりと白いものがほんたうは何かご承知ですか。」先生は、黒板に吊した大きな黒い星座の図の、上から下へ白くけぶった銀河帯のやうなところを指しながら、みんなに問をかけました。</p>
+              <p>カムパネルラが手をあげました。それから四五人手をあげました。ジョバンニも手をあげやうとして、急いでそのまゝやめました。たしかにあれがみんな星だと、いつか雑誌で読んだのでしたが、このごろはジョバンニはまるで毎日教室でもねむく、本を読むひまも読む本もないので、なんだかどんなこともよくわからないといふ気持ちがするのでした。</p>
+            </div>
+            <div class="tab-pane fade" id="dropdown4">
+              <p>よだかは、実にみにくい鳥です。</p>
+              <p>顔は、ところどころ、味噌をつけたようにまだらで、くちばしは、ひらたくて、耳までさけています。</p>
+              <p>足は、まるでよぼよぼで、一間とも歩けません。</p>
+              <p>ほかの鳥は、もう、よだかの顔を見ただけでも、いやになってしまうという工合でした。</p>
+            </div>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</section>{% endblock %}
+
+{% block "script" %}<script>
+var tree = [
+    {
+      text: "Parent 1",
+      nodes: [
+        {
+          text: "Child 1",
+          nodes: [
+            {
+              text: "Grandchild 1"
+            },
+            {
+              text: "Grandchild 2"
+            }
+          ]
+        },
+        {
+          text: "Child 2"
+        }
+      ]
+    },
+    {
+      text: "Parent 2"
+    },
+    {
+      text: "Parent 3"
+    },
+    {
+      text: "Parent 4"
+    },
+    {
+      text: "Parent 5"
+    }
+  ];
+function getTree() {
+  // Some logic to retrieve, or generate tree structure
+  return tree;
+}
+$('#tree').treeview({data: getTree()});
+
+$("#singleRange").ionRangeSlider({
+  grid: true,
+  min: 0,
+  max: 100,
+  grid_num: 10,
+  from: 65
+});
+
+$("#doubleRange").ionRangeSlider({
+  skin: "big",
+  type: "double",
+  grid: true,
+  min: 0,
+  max: 1000,
+  from: 300,
+  from_min: 100,
+  from_max: 800,
+  from_shadow: true,
+  to: 700,
+  step: 10,
+  grid_num: 10,
+  prefix: "$"
+});
+
+$("#dateRange").ionRangeSlider({
+  skin: "round",
+  grid: true,
+  from: new Date().getMonth(),
+  values: [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  ]
+});
+
+$("#modernRange").ionRangeSlider({
+   skin: "modern",
+   grid: true,
+   min: 0,
+   max: 100,
+   grid_num: 10,
+   from: 30
+});
+$("#sharpRange").ionRangeSlider({
+   skin: "sharp",
+   grid: true,
+   min: 0,
+   max: 100,
+   grid_num: 10,
+   from: 80
+});
+$("#squareRange").ionRangeSlider({
+   skin: "square",
+   grid: true,
+   min: 0,
+   max: 100,
+   grid_num: 10,
+   from: 80
+});
+</script>{% endblock %}

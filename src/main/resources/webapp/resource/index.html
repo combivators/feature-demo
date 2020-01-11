@@ -1,0 +1,178 @@
+{% extends "common/layout" %}
+{% block "page" %}
+<section class="bs-docs-section clearfix">
+    <div class="row">
+      <div class="col-lg-10">
+        <div class="page-header">
+          <h1 id="forms">Resource Editor</h1>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="margin-bottom: 2rem;">
+      <div class="col-lg-3">
+        <div id="treeview-selectable"></div>
+      </div>
+      <div class="col-lg-7">
+        <div class="tab-form">
+          <ul class="nav nav-tabs" id="inputTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#input-english">English</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#input-chinese">中文</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#input-japanese">日本語</a>
+            </li>
+          </ul>
+          <form class="form-horizontal">
+          <div id="tabContent" class="tab-content">
+            <div class="tab-pane fade show" id="input-english">
+              <div class="form-group">
+                <label for="enTextarea" id="enLabel">Text</label>
+                <textarea class="form-control" id="enTextarea" rows="3"></textarea>
+              </div>
+              <br/>
+              <button type="button" class="btn btn-primary">Save</button>
+            </div>
+            <div class="tab-pane fade show active" id="input-chinese">
+              <div class="form-group">
+                <label for="zhTextarea" id="zhLabel">文本</label>
+                <textarea class="form-control" id="zhTextarea" rows="3"></textarea>
+              </div>
+              <br/>
+              <button type="button" class="btn btn-primary">保存</button>
+            </div>
+            <div class="tab-pane fade show" id="input-japanese">
+              <div class="form-group">
+                <label for="jaTextarea" id="jaLabel">内容</label>
+                <textarea class="form-control" id="jaTextarea" rows="3"></textarea>
+              </div>
+              <br/>
+              <button type="button" class="btn btn-primary">保管</button>
+            </div>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock %}
+{% block "script" %}
+<script>
+
+  var options = {
+    language: 'zh',
+    treeApi: '/home/res/tree/',
+    valueApi: '/home/res/value/',
+    saveApi: '/home/res/save/',
+    data: [],
+    current: '',
+    treeview: null
+  };
+
+  //点击选项卡函数
+  $('.nav-tabs a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    var tab = $(e.target).text();         // active tab
+    if (tab == "English") {
+      options.language = "en";
+    } else if (tab == "中文") {
+      options.language = "zh";
+    } else if (tab == "日本語") {
+        options.language = "ja";
+    }
+    console.log("Show tab : " + tab + "  language:" + options.language);
+    loadTree(options.language);
+    if (options.current != '') {
+      loadValue(options.language, options.current);
+    }
+  });
+
+  $("#tabContent button").click(function(){
+    var button = $(this);
+    button.attr("disabled", true);
+    var ta = "textarea#" + options.language + "Textarea";
+    var data = {
+      lang: options.language,
+      key: options.current,
+      value: $(ta).val()
+    };
+    //console.log("Save value : " + JSON.stringify(data));
+
+    $.ajax({
+        type: "post",
+        url:  options.saveApi,
+        data:JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: "json",
+        success: function(result) {   // 200 OK
+          console.log("Save OK : " + result.value);
+        },
+        error: function() {         // HTTP Error
+          console.log("Server Error. Pleasy try again later.");
+        },
+        complete: function() {
+            button.attr("disabled", false);
+        }
+    });
+  });
+
+$(function(){
+  loadTree(options.language);
+
+});
+
+
+//加载左侧数据
+function loadTree(language){
+  options.language = language;
+  $.getJSON(options.treeApi + language, buildTree);
+};
+
+function buildTree(data){
+  options.data = data;
+  options.treeview = $('#treeview-selectable').treeview({
+      color: "#428bca",
+      levels: 1,
+      showBorder: false,
+      expandIcon: 'fas fa-angle-right',
+      collapseIcon: 'fas fa-angle-down',
+      //nodeIcon: 'fas fa-bookmark',
+      data: data,
+      /*
+      onNodeUnselected: function (event, node) {
+        console.log("Unselected " + node.text);
+      },
+      */
+      onNodeSelected: function(event, node) {
+        console.log("Selected href '" + node.href +"'");
+        loadValue(options.language, node.href);
+      }
+    });
+};
+
+//
+function loadValue(language, name){
+  var ta = "textarea#" + language + "Textarea";
+  var tl = "#" + language + "Label";
+  $.getJSON(options.valueApi + language + "/" +name)
+    .done(function(data,status,jqXHR) {
+      //console.log('Success jqXHR: ' + jqXHR.status + ' status:' + status);
+      //console.log("Value: " + data.value);
+      //console.log(JSON.stringify(data));
+      if (!(typeof data.value === 'undefined')) {
+        // Set Textarea contents
+        $(ta).val(data.value);
+        $(tl).text(name);
+        options.current = name;
+      }
+    })
+    .fail(function(jqXHR, status, error) {
+      console.log('Fail : ' + jqXHR.status + ' status:' + status);
+      $(ta).val("");
+      $(tl).text("");
+    });
+};
+
+</script>
+{% endblock %}

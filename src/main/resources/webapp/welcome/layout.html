@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!--Under MIT licence-->
+    <!--Meta data-->
+    <meta charset="UTF-8">
+    <title>{{page.title}}</title>
+{% include "welcome/metas" %}
+    <!--Meta data end-->
+
+    <!--Stylesheets-->
+{% include "welcome/styles" %}
+    <!--Stylesheets End-->
+</head>
+
+<body data-spy="scroll" data-target="#navbarresponsive" id="bootstrap-override" data-offset="100">
+
+    <!--Start Nav section-->
+    <div id="home">
+        <nav class="navbar navbar-expand-md transparent fixed-top ">
+            <a class="navbar-brand" href="#home"><img src="/images/logo.png" alt="logo"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarresponsive">
+                <span class="navbar-toggler-icon" id="navbar-toggler-override"></span>
+            </button>
+
+
+            <div class="collapse navbar-collapse" id="navbarresponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link hvr-underline-from-center" href="#home">{{nav.home}}</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link hvr-underline-from-center" href="#about">{{nav.about}}</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link hvr-underline-from-center" href="#portfolio">{{nav.portfolio}}</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link hvr-underline-from-center" href="#services">{{nav.services}}</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link hvr-underline-from-center" href="#blog">{{nav.blog}}</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link hvr-underline-from-center" href="#contact">{{nav.contact}}</a></li>
+                </ul>
+            </div>
+        </nav>
+        <!--End Nav section-->
+
+        <!--Start landing page-->
+        <div class="jumbotron jumbotron-fluid">
+
+            <div class="container-fluid inner-text">
+                <h4>{{welcome}}</h4>
+                <h2>{{who}}</h2>
+                <a class="btn btn-outline-dark btn-lg" href="#about" role="button">{{start}}</a>
+
+            </div>
+
+        </div>
+    </div>
+    <!--End landing section-->
+
+    <!--About section started-->
+
+    <section id="about" class="container offset">
+        <div class="col-md-12 head-title">
+            <div class="underline-red">
+                <h3>{{about.title}}</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-7 ">
+                <div class="about-text">
+                    <p>
+                    {{about.description.content1}}
+                    </p>
+                    <p>
+                    {{about.description.content2}}
+                    </p>
+                    <p>
+                    {{about.description.content3}}
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="dogimg"></div>
+            </div>
+        </div>
+    </section>
+
+    <!--End About section-->
+
+    <!--portfolio section started-->
+    <section id="portfolio" class="container-fluid offset">
+        <div class="col-sm-12 head-title">
+            <div class="underline-red">
+                <h3>{{portfolio.title}}</h3>
+            </div>
+        </div>
+        <div class="flip-menu">
+            <section class="flip-item-wrap">
+                <img class="fake-image" src="/images/gallery_img/img-1.jpg" alt="image">
+                <!-- this image will add height to parent element -->
+                <input type="checkbox" class="flipper" id="a">
+                <label for="a" class="flip-item">
+                    <figure class="front"><img src="/images/gallery_img/img-1.jpg" alt="image"></img></figure>
+                    <figure class="back">
+                        <img src="/images/gallery_img/img-black-1.jpg" alt="image"></img>
+                        <div class="flip-item-desc">
+                            <h4 class="flip-item-title">{{portfolio.1.title}}</h4>
+                            <p>{{portfolio.1.content}}</p>
+                        </div>
+                    </figure>
+                </label>
+            </section>
+            <section class="flip-item-wrap">
+                <img class="fake-image" src="/images/gallery_img/img-1.jpg" alt="image">
+                <!-- this image will add height to parent element -->
+                <input type="checkbox" class="flipper" id="b">
+                <label for="b" class="flip-item">
+                    <figure class="front"><img src="/images/gallery_img/img-2.jpg" alt="image"></img></figure>
+                    <figure class="back">
+                        <img src="/images/gallery_img/img-black-2.jpg" alt="image"></img>
+                        <div class="flip-item-desc">
+                            <h4 class="flip-item-title">{{portfolio.2.title}}</h4>
+                            <p>{{portfolio.2.content}}</p>
+                        </div>
+                    </figure>
+                </label>
+            </section>
+            <section class="flip-item-wrap">
+                <img class="fake-image" src="/images/gallery_img/img-1.jpg" alt="image">
+                <!-- this image will add height to parent element -->
+                <input type="checkbox" class="flipper" id="c">
+                <label for="c" class="flip-item">
+                    <figure class="front"><img src="/images/gallery_img/img-3.jpg" alt="image"></img></figure>
+                    <figure class="back">
+                        <img src="/images/gallery_img/img-black-3.jpg" alt="image"></img>
+                        <div class="flip-item-desc">
+                            <h4 class="flip-item-title">{{portfolio.3.title}}</h4>
+                            <p>{{portfolio.3.content}}</p>
+                        </div>
+                    </figure>
+                </label>
+            </section>
+            <section class="flip-item-wrap">
+                <img class="fake-image" src="/images/gallery_img/img-1.jpg" alt="image">
+                <!-- this image will add height to parent element -->
+                <input type="checkbox" class="flipper" id="d">
+                <label for="d" class="flip-item">
+                    <figure class="front"><img src="/images/gallery_img/img-4.jpg" alt="image"></img></figure>
+                    <figure class="back">
+                        <img src="/images/gallery_img/img-black-4.jpg" alt="image"></img>
+                        <div class="flip-item-desc">
+                            <h4 class="flip-item-title">{{portfolio.4.title}}</h4>
+                            <p>{{portfolio.4.content}}</p>
+                        </div>
+                    </figure>
+                </label>
+            </section>
+            <section class="flip-item-wrap">
+                <img class="fake-image" src="/images/gallery_img/img-1.jpg" alt="image">
+                <!-- this image will add height to parent element -->
+                <input type="checkbox" class="flipper" id="e">
+                <label for="e" class="flip-item">
+                    <figure class="front"><img src="/images/gallery_img/img-5.jpg" alt="image"></img></figure>
+                    <figure class="back">
+                        <img src="/images/gallery_img/img-black-5.jpg" alt="image"></img>
+                        <div class="flip-item-desc">
+                            <h4 class="flip-item-title">{{portfolio.5.title}}</h4>
+                            <p>{{portfolio.5.content}}</p>
+                        </div>
+                    </figure>
+                </label>
+            </section>
+            <section class="flip-item-wrap">
+                <img class="fake-image" src="/images/gallery_img/img-1.jpg" alt="image">
+                <!-- this image will add height to parent element -->
+                <input type="checkbox" class="flipper" id="f">
+                <label for="f" class="flip-item">
+                    <figure class="front"><img src="/images/gallery_img/img-6.jpg" alt="image"></img></figure>
+                    <figure class="back">
+                        <img src="/images/gallery_img/img-black-6.jpg" alt="image"></img>
+                        <div class="flip-item-desc">
+                            <h4 class="flip-item-title">{{portfolio.6.title}}</h4>
+                            <p>{{portfolio.6.content}}</p>
+                        </div>
+                    </figure>
+                </label>
+            </section>
+            <section class="flip-item-wrap">
+                <img class="fake-image" src="/images/gallery_img/img-1.jpg" alt="image">
+                <!-- this image will add height to parent element -->
+                <input type="checkbox" class="flipper" id="g">
+                <label for="g" class="flip-item">
+                    <figure class="front"><img src="/images/gallery_img/img-7.jpg" alt="image"></img></figure>
+                    <figure class="back">
+                        <img src="/images/gallery_img/img-black-7.jpg" alt="image"></img>
+                        <div class="flip-item-desc">
+                            <h4 class="flip-item-title">{{portfolio.7.title}}</h4>
+                            <p>{{portfolio.7.content}}</p>
+                        </div>
+                    </figure>
+                </label>
+            </section>
+            <section class="flip-item-wrap">
+                <img class="fake-image" src="/images/gallery_img/img-1.jpg" alt="image">
+                <!-- this image will add height to parent element -->
+                <input type="checkbox" class="flipper" id="h">
+                <label for="h" class="flip-item">
+                    <figure class="front"><img src="/images/gallery_img/img-8.jpg" alt="image"></img></figure>
+                    <figure class="back">
+                        <img src="/images/gallery_img/img-black-8.jpg" alt="image"></img>
+                        <div class="flip-item-desc">
+                            <h4 class="flip-item-title">{{portfolio.8.title}}</h4>
+                            <p>{{portfolio.8.content}}</p>
+                        </div>
+                    </figure>
+                </label>
+            </section>
+            <section class="flip-item-wrap">
+                <img class="fake-image" src="/images/gallery_img/img-1.jpg" alt="image">
+                <!-- this image will add height to parent element -->
+                <input type="checkbox" class="flipper" id="j">
+                <label for="j" class="flip-item">
+                    <figure class="front"><img src="/images/gallery_img/img-9.jpg" alt="image"></img></figure>
+                    <figure class="back">
+                        <img src="/images/gallery_img/img-black-9.jpg" alt="image"></img>
+                        <div class="flip-item-desc">
+                            <h4 class="flip-item-title">{{portfolio.9.title}}</h4>
+                            <p>{{portfolio.9.content}}</p>
+                        </div>
+                    </figure>
+                </label>
+            </section>
+            <section class="flip-item-wrap">
+                <img class="fake-image" src="/images/gallery_img/img-1.jpg" alt="image">
+                <!-- this image will add height to parent element -->
+                <input type="checkbox" class="flipper" id="k">
+                <label for="k" class="flip-item">
+                    <figure class="front"><img src="/images/gallery_img/img-10.jpg" alt="image"></img></figure>
+                    <figure class="back">
+                        <img src="/images/gallery_img/img-black-10.jpg" alt="image"></img>
+                        <div class="flip-item-desc">
+                            <h4 class="flip-item-title">{{portfolio.10.title}}</h4>
+                            <p>{{portfolio.10.content}}</p>
+                        </div>
+                    </figure>
+                </label>
+            </section>
+            <section class="flip-item-wrap">
+                <img class="fake-image" src="/images/gallery_img/img-1.jpg" alt="image">
+                <!-- this image will add height to parent element -->
+                <input type="checkbox" class="flipper" id="l">
+                <label for="l" class="flip-item">
+                    <figure class="front"><img src="/images/gallery_img/img-11.jpg" alt="image"></img></figure>
+                    <figure class="back">
+                        <img src="/images/gallery_img/img-black-11.jpg" alt="image"></img>
+                        <div class="flip-item-desc">
+                            <h4 class="flip-item-title">{{portfolio.11.title}}</h4>
+                            <p>{{portfolio.11.content}}</p>
+                        </div>
+                    </figure>
+                </label>
+            </section>
+            <section class="flip-item-wrap">
+                <img class="fake-image" src="/images/gallery_img/img-1.jpg" alt="image">
+                <!-- this image will add height to parent element -->
+                <input type="checkbox" class="flipper" id="m">
+                <label for="m" class="flip-item">
+                    <figure class="front"><img src="/images/gallery_img/img-12.jpg" alt="image"></img></figure>
+                    <figure class="back">
+                        <img src="/images/gallery_img/img-black-12.jpg" alt="image"></img>
+                        <div class="flip-item-desc">
+                            <h4 class="flip-item-title">{{portfolio.12.title}}</h4>
+                            <p>{{portfolio.12.title}}</p>
+                        </div>
+                    </figure>
+                </label>
+            </section>
+        </div>
+    </section>
+    <div class="clearfix"></div>
+    <!--portfolio end-->
+
+
+    <!--Services section started-->
+    <section id="services" class="container-margin-services offset">
+        <div class="container-fluid background-layer-services ">
+            <div class="col-sm-12 head-title color-white">
+                <div class="underline-white">
+                    <h3>{{services.title}}</h3>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 Services-tab">
+                    <div class="folded-corner service_tab_1">
+                        <div class="text">
+                            <i class="fa fa-image fa-5x fa-icon-image"></i>
+                            <p><h3>{{services.designing.title}}</h3></p>
+                            <p>
+                            {{services.designing.contents}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 Services-tab">
+                    <div class="folded-corner service_tab_1">
+                        <div class="text">
+                            <i class="fa fa-lightbulb fa-5x fa-icon-image"></i>
+                            <p><h3>{{services.developing.title}}</h3></p>
+                            <p>
+                            {{services.developing.contents}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 Services-tab">
+                    <div class="folded-corner service_tab_1">
+                        <div class="text">
+                            <i class="fa fa-truck fa-5x fa-icon-image"></i>
+                            <p><h3>{{services.marketing.title}}</h3></p>
+                            <p>
+                            {{services.marketing.contents}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 Services-tab">
+                    <div class="folded-corner service_tab_1">
+                        <div class="text">
+                            <i class="fa fa-award fa-5x fa-icon-image"></i>
+                            <p><h3>{{services.branding.title}}</h3></p>
+                            <p>
+                            {{services.branding.contents}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 Services-tab">
+                    <div class="folded-corner service_tab_1">
+                        <div class="text">
+                            <i class="fa fa-chart-line fa-5x fa-icon-image"></i>
+                            <p><h3>{{services.analytics.title}}</h3></p>
+                            <p>
+                            {{services.analytics.contents}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 Services-tab">
+                    <div class="folded-corner service_tab_1">
+                        <div class="text">
+                            <i class="fa fa-mobile-alt fa-5x fa-icon-image"></i>
+                            <p><h3>{{services.application.title}}</h3></p>
+                            <p>
+                            {{services.application.contents}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 Services-tab">
+                    <div class="folded-corner service_tab_1">
+                        <div class="text">
+                            <i class="fa fa-shopping-cart fa-5x fa-icon-image"></i>
+                            <p><h3>{{services.ec.title}}</h3></p>
+                            <p>
+                            {{services.ec.contents}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 Services-tab">
+                    <div class="folded-corner service_tab_1">
+                        <div class="text">
+                            <i class="fa fa-bullhorn fa-5x fa-icon-image"></i>
+                            <p><h3>{{services.support.title}}</h3></p>
+                            <p>
+                            {{services.support.contents}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="clearfix"></div>
+    <!--End of Services-->
+
+
+    <!--Skills section started-->
+    <section class="container container-margin">
+        <div class="col-sm-12 head-title">
+            <div class="underline-red-skills ">
+                <h3>{{skills.title}}</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="text-skills">
+                    <p>{{skills.contents}}
+                    </p>
+                </div>
+            </div>
+            <div class="col-sm-12">
+
+                <div class="progress skill-bar">
+                    <div class="progress-bar" data-percent="{{skills.1.percent}}">
+                        <span><span class="count"></span>% {{skills.1.type}}</span>
+                    </div>
+                </div>
+                <div class="progress  skill-bar">
+                    <div class="progress-bar" data-percent="{{skills.2.percent}}">
+                        <span><span class="count"></span>% {{skills.2.type}}</span>
+                    </div>
+                </div>
+                <div class="progress skill-bar">
+                    <div class="progress-bar" data-percent="{{skills.3.percent}}">
+                        <span><span class="count"></span>% {{skills.3.type}}</span>
+                    </div>
+                </div>
+                <div class="progress  skill-bar">
+                    <div class="progress-bar" data-percent="{{skills.4.percent}}">
+                        <span><span class="count"></span>% {{skills.4.type}}</span>
+                    </div>
+                </div>
+                <div class="progress  skill-bar">
+                    <div class="progress-bar" data-percent="{{skills.5.percent}}">
+                        <span><span class="count"></span>% {{skills.5.type}}</span>
+                    </div>
+                </div>
+                <div class="progress  skill-bar">
+                    <div class="progress-bar" data-percent="{{skills.6.percent}}">
+                        <span><span class="count"></span>% {{skills.6.type}}</span>
+                    </div>
+                </div>
+                <div class="progress  skill-bar">
+                    <div class="progress-bar" data-percent="{{skills.7.percent}}">
+                        <span><span class="count"></span>% {{skills.7.type}}</span>
+                    </div>
+                </div>
+                <div class="progress  skill-bar">
+                    <div class="progress-bar" data-percent="{{skills.8.percent}}">
+                        <span><span class="count"></span>% {{skills.8.type}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <div class="clearfix"></div>
+    <!--End of skills-->
+
+
+    <!--blog Section Started-->
+    <section id="blog" class="container container-margin offset">
+        <div class="col-sm-12 head-title">
+            <div class="underline-red">
+                <h3>{{blog.title}}</h3>
+            </div>
+        </div>
+
+        <div class="row mb-5 align-items-stretch">
+            <div class="col-md-6 col-lg-4 mb-4 mb-lg-4">
+                <div class="h-entry">
+                    <img src="/images/blog-1.jpg" alt="Image" class="img-fluid">
+                    <h2 class="link-text"><a href="#">{{blog.1.title}}</a></h2>
+                    <div class="meta-blog mb-4">by {{blog.1.writer}} <span class="mx-2">&bullet;</span> {{blog.1.date}} <span class="mx-2">&bullet;</span> <a href="#">News</a></div>
+                    <p>{{blog.1.contents}}</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-4 mb-lg-4">
+                <div class="h-entry">
+                    <img src="/images/blog-2.jpg" alt="Image" class="img-fluid">
+                    <h2 class="link-text"><a href="#">{{blog.2.title}}</a></h2>
+                    <div class="meta-blog mb-4">by {{blog.2.writer}} <span class="mx-2">&bullet;</span> {{blog.2.date}} <span class="mx-2">&bullet;</span> <a href="#">News</a></div>
+                    <p>{{blog.2.contents}}</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-4 mb-lg-4">
+                <div class="h-entry">
+                    <img src="/images/blog-3.jpg" alt="Image" class="img-fluid">
+                    <h2 class="link-text"><a href="#">{{blog.3.title}}</a></h2>
+                    <div class="meta-blog mb-4">by {{blog.3.writer}} <span class="mx-2">&bullet;</span> {{blog.3.date}} <span class="mx-2">&bullet;</span> <a href="#">News</a></div>
+                    <p>{{blog.3.contents}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="top-margin">
+            <div class="col-12 text-center">
+                <a class="btn btn-danger" href="https://twitter.com/combivators" target="blank" role="button">{{blog.view}}</a>
+            </div>
+        </div>
+    </section>
+    <div class="clearfix"></div>
+    <!--End of Blog-->
+
+
+    <!--contact form started-->
+    <footer id="contact" class="container-margin-services offset">
+        <div class=" container-fluid background-layer">
+            <div class="col-sm-12 head-title color-white">
+                <div class="underline-white-contact">
+                    <h3>{{contact.title}}</h3>
+                </div>
+            </div>
+
+            <form action="/action_page.php" class="contact-form row">
+                <div class="form-field col-sm-6">
+                    <input id="name" class="input-text js-input" type="text" required>
+                    <label class="label" for="name">{{contact.name}}</label>
+                </div>
+                <div class="form-field col-sm-6 ">
+                    <input id="email" class="input-text js-input" type="email" required>
+                    <label class="label" for="email">{{contact.email}}</label>
+                </div>
+                <div class="form-field col-sm-12 ">
+                    <input id="message" class="input-text js-input" type="text" required>
+                    <label class="label" for="message">{{contact.message}}</label>
+                </div>
+                <div class="form-field col-sm-12 align-center">
+                    <input class="submit-btn" type="submit" value="Submit">
+                </div>
+            </form>
+            <hr class="end-line">
+
+            <div class="row footer-items">
+                <div class="col-sm-12 icon-fa">
+                    <a href='#'><i class="fab fa-lg fa-facebook-f"></i></a>
+                    <a href='https://twitter.com/combivators' target="blank"><i class="fab fa-lg fa-twitter"></i></a>
+                    <a href='#'><i class="fab fa-lg fa-instagram"></i></a>
+                    <a href='#'><i class="fab fa-lg fa-youtube"></i></a>
+                    <a href='#'><i class="fab fa-lg fa-linkedin-in"></i></a>
+                    <a href='https://github.com/combivators' target="blank"><i class="fab fa-lg fa-github"></i></a>
+                </div>
+                <div class="col-sm-12 copyright-text">
+                    <p>{{{copyrights}}}</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div class="clearfix"></div>
+    <!--End of Contact form-->
+
+</body>
+
+<div class="pre-loader">
+    <div class="sk-fading-circle">
+        <div class="sk-circle1 sk-circle"></div>
+        <div class="sk-circle2 sk-circle"></div>
+        <div class="sk-circle3 sk-circle"></div>
+        <div class="sk-circle4 sk-circle"></div>
+        <div class="sk-circle5 sk-circle"></div>
+        <div class="sk-circle6 sk-circle"></div>
+        <div class="sk-circle7 sk-circle"></div>
+        <div class="sk-circle8 sk-circle"></div>
+        <div class="sk-circle9 sk-circle"></div>
+        <div class="sk-circle10 sk-circle"></div>
+        <div class="sk-circle11 sk-circle"></div>
+        <div class="sk-circle12 sk-circle"></div>
+    </div>
+</div>
+
+    <!--Scripts-->
+{% include "welcome/scripts" %}
+    <!--Scripts end-->
+</html>

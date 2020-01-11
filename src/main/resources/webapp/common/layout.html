@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!--Under MIT licence-->
+  <!--Meta data-->
+  <meta charset="UTF-8">
+  <title>{{title}}</title>
+{% include "common/metas" %}
+  <!--Meta data end-->
+
+  <!--Stylesheets-->
+{% include "common/styles" %}
+  <!--Stylesheets End-->
+</head>
+
+<body>
+<header>
+  <!--Start Nav section-->
+{% include "common/navbar" %}
+  <!--End Nav section-->
+</header>
+
+<div class="container">
+{% block "page" %}{% endblock %}
+</div>
+
+<div class="clearfix"></div>
+<!--End of Blog-->
+<!--contact form started-->
+<footer id="contact" class="container-margin-services offset">
+</footer>
+<div class="clearfix"></div>
+<!--End of Contact form-->
+
+</body>
+
+<!--Scripts-->
+{% include "common/scripts" %}
+{% block "script" %}{% endblock %}
+<!--Scripts end-->
+</html>

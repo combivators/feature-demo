@@ -1,0 +1,163 @@
+{% extends "sidebar/layout" %}
+{% block "page" %}
+    <h2><a>Top</a> / <a>Profile</a></h2>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="page-header">
+          <h1 id="forms">プロフィール</h1>
+        </div>
+        <div class="tab-form">
+          <ul class="nav nav-tabs">
+            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#input-base">基本情報</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#input-credential">認証情報</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#input-contact">連絡先</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#input-education">学歴</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#input-experience">職歴</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#input-skills">資格・スキル</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#input-other">その他</a></li>
+          </ul>
+          <form action="/home/tools/post" method="post">
+          <div class="tab-content">
+            <div class="tab-pane fade show active" id="input-base">
+              <div class="row">
+                <div class="col-sm-9">
+                  <div class="form-group row">
+                      <label for="firstname" class="col-sm-2 col-form-label text-md-center">姓*</label>
+                      <div class="col-sm-4">
+                      <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Enter your first name">
+                      </div>
+                      <label for="lastname" class="col-sm-2 col-form-label text-md-center">名*</label>
+                      <div class="col-sm-4">
+                      <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Enter your last name">
+                      </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="nick" class="col-sm-2 col-form-label">ニックネーム</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="nick" name="nick" placeholder="Enter your nick name">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="birthday" class="col-sm-2 col-form-label">生年月日</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="birthday" name="birthday" placeholder="Enter your birthday">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="sex" class="col-sm-2 col-form-label">性別</label>
+                    <div class="col-sm-1"></div>
+                    <div class="custom-control custom-radio col-sm-2">
+                      <input type="radio" id="male" name="sex" class="custom-control-input">
+                      <label class="custom-control-label text-md-right" for="male">男性</label>
+                    </div>
+                    <div class="custom-control custom-radio col-sm-2">
+                      <input type="radio" id="female" name="sex" class="custom-control-input">
+                      <label class="custom-control-label text-md-right" for="female">女性</label>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <button type="submit" class="btn btn-primary">送信</button>
+                  </div>
+                </div><!-- left col -->
+                <div class="col-sm-3">
+                </div><!-- right col-->
+              </div><!-- row -->
+            </div>
+
+            <!--  Credential -->
+            <div class="tab-pane fade" id="input-credential">
+              <div class="form-group">
+                <label for="email">メールアドレス</label>
+                <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="you@email.com">
+              </div>
+              <div class="form-group">
+                <label for="password">パスワード</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password">
+              </div>
+              <div class="form-group">
+                <label for="repassword">パスワード確認</label>
+                <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Verify password">
+              </div>
+              <button type="submit" class="btn btn-primary">送信</button>
+            </div>
+            <!--  Contact -->
+            <div class="tab-pane fade" id="input-contact">
+              <div class="form-group">
+                <label for="location">住所</label>
+                <input type="text" class="form-control" id="location" name="location" placeholder="Enter a location">
+              </div>
+              <div class="form-group">
+                <label for="postcode">郵便番号</label>
+                <input type="text" class="form-control" id="postcode" name="postcode" placeholder="Enter post code">
+              </div>
+              <div class="form-group">
+                <label for="station">最寄駅</label>
+                <input type="text" class="form-control" id="station" name="station" placeholder="Enter nearest station name">
+              </div>
+              <div class="form-group">
+                <label for="mobile">携帯電話</label>
+                <input type="tel" class="form-control" id="mobile" name="mobile" placeholder="Enter mobile number">
+              </div>
+              <div class="form-group">
+                <label for="phone">自宅電話</label>
+                <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter phone number">
+              </div>
+              <div class="form-group">
+                <label for="emergency">緊急連絡先名称</label>
+                <input type="text" class="form-control" id="emergency" name="emergency" placeholder="Enter a emergency contact name">
+              </div>
+              <div class="form-group">
+                <label for="location">緊急連絡先電話</label>
+                <input type="tel" class="form-control" id="emergencycall" name="emergencycall" placeholder="Enter a emergency call phone number">
+              </div>
+              <button type="submit" class="btn btn-primary">送信</button>
+            </div>
+            <!--  Education -->
+            <div class="tab-pane fade" id="input-education">
+              <div class="form-group">
+                <label for="exampleTextarea">テキストエリア</label>
+                <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">送信</button>
+            </div>
+
+            <!--  Experience -->
+            <div class="tab-pane fade" id="input-education">
+              <div class="form-group">
+                <label for="exampleTextarea">テキストエリア</label>
+                <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">送信</button>
+            </div>
+            <!--  Skills -->
+            <div class="tab-pane fade" id="input-skills">
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="customSwitch1" name="customSwitch1">
+                  <label class="custom-control-label" for="customSwitch1">トグルスイッチ</label>
+                </div>
+              </div>
+            </div>
+            <!--  Other -->
+            <div class="tab-pane fade" id="input-other">
+              <div class="form-group">
+                <label for="exampleTextarea">テキストエリア</label>
+                <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">送信</button>
+            </div>
+
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="line"></div>
+    <h2>Notice</h2>
+    <p>...</p>
+{% endblock %}
+{% block "script" %}
+<script>
+</script>
+{% endblock %}

@@ -1,0 +1,31 @@
+<!DOCTYPE html><!-- https://bootstrapious.com/tutorial/sidebar/index4.html simple-sidebar2.html -->
+<html lang="en">
+<head>
+  <!--Under MIT licence-->
+  <meta charset="UTF-8">
+  <title>{{title}}</title>
+{% include "sidebar/metas" %}
+{% include "sidebar/styles" %}
+</head>
+
+<body>
+<div class="wrapper">
+
+  <!--Start sidebar -->
+{% include "sidebar/sidebar" %}
+  <!--End sidebar -->
+  <!-- Page Content  -->
+  <div id="content">
+  <!--Start Nav section-->
+{% include "sidebar/navbar" %}
+  <!--End Nav section-->
+{% block "page" %}{% endblock %}
+  </div>
+
+</div><!-- wrapper -->
+</body>
+<!--Scripts-->
+{% include "sidebar/scripts" %}
+{% block "script" %}{% endblock %}
+<!--Scripts end-->
+</html>

@@ -1,0 +1,106 @@
+logging:
+  handler:
+    output: none
+  level:
+    javax.xml.bind: WARNING
+    com.sun:     WARNING
+    sun.net:     WARNING
+    org.apache:  OFF
+    net.tiny:    FINE
+
+#
+main: ${launcher}
+#shutdown = ${hook}
+daemon: true
+executor: ${pool}
+callback: ${rest.service}
+pool:
+  class:   net.tiny.service.PausableThreadPoolExecutor
+  size:    5
+  max:     10
+  timeout: 3
+launcher:
+  class: net.tiny.ws.Launcher
+  builder:
+    port: 8080
+#   bind: 192.168.1.1
+    backlog: 10
+    stopTimeout: 1
+    executor: ${pool}
+    handlers: ${handler.resource}, ${handler.sys}, ${handler.rest}
+#    ssl:
+#      file:       ks
+#      password:   12345
+#      clientAuth: false
+
+handler:
+  resource:
+    class:     net.tiny.ws.ResourceHttpHandler
+#    cacheSize: 100
+    maxAge:    0
+    internal:  true
+    path:      /
+    paths:     /:home
+    filters:   ${filter.logger}, ${filter.cors}
+#
+  sys:
+    class:   net.tiny.ws.ControllableHandler
+    path:    /sys
+    auth:    ${auth.simple}
+    filters: ${filter.logger}
+#
+  rest:
+    class:       net.tiny.ws.rs.RestfulHttpHandler
+    path:        /home
+    filters:     ${filter.logger}
+    application: ${rest.application}
+    renderer :   ${renderer.html}
+    listener:    ${rest.monitor}
+#
+filter:
+   logger:
+     class: net.tiny.ws.AccessLogger
+     out:   stdout
+   cors:
+     class: net.tiny.ws.CorsResponseFilter
+   snap:
+     class: net.tiny.ws.SnapFilter
+#
+auth:
+#
+  simple:
+    class:    net.tiny.ws.auth.SimpleAuthenticator
+    token:    DES:CAhQn4bV:HIOsSQIg
+    encode:   true
+    username: paas
+# 'password'
+    password: Piz5wX49L4MS4SYsGwEMNw==
+#
+rest:
+  application:
+    class:   net.tiny.ws.rs.RestApplication
+    pattern: net.tiny.message.*, net.tiny.feature.*
+    jars:    .*/classes/, .*/feature-.*[.]jar, .*/tiny-.*[.]jar, !.*/tiny-dic.*[.]jar
+    loggingLevel: info
+  service:
+    class:   net.tiny.ws.rs.RestServiceLocator
+#   listener: ${rest.monitor}
+  monitor:
+    class: net.tiny.ws.rs.RestServiceLocator$RestServiceMonitor
+#
+renderer:
+  html:
+    class:   net.tiny.ws.mvc.HtmlRenderer
+    prefix:  webapp
+#
+vcap:
+  alias: vcap.services.ups-tiny.credentials
+#datasource:
+#  global:
+#    username: ${${vcap.alias}.cf.username}
+#    password: ${${vcap.alias}.cf.password}
+#
+res:
+  editor:
+    class: net.tiny.feature.web.PropertiesEditor
+    path:  /opt/demo/i18n

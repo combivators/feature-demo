@@ -1,0 +1,5 @@
+messages:
+  locale: zh_CN
+  cache:  true
+  useCodeAsDefaultMessage: false
+  basenames: i18n/common/message, i18n/demo/message
