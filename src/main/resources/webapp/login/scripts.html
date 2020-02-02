@@ -1,0 +1,16 @@
+<script src="/jquery/jquery-3.4.1.min.js"></script>
+<script src="/popper.js/1.16.0/popper.min.js"></script>
+<script src="/bootstrap-4.3.1/js/bootstrap.min.js"></script>
+<script>
+const signUpButton = document.getElementById('signUp');
+const signInButton = document.getElementById('signIn');
+const container = document.getElementById('container');
+
+signUpButton.addEventListener('click', () => {
+  container.classList.add("right-panel-active");
+});
+
+signInButton.addEventListener('click', () => {
+  container.classList.remove("right-panel-active");
+});
+</script>

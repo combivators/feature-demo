@@ -1,4 +1,4 @@
-## Feature Platform: 一个基于Tiny Service微服框架构筑的具有AI功能的未来型人才信息平台
+## Feature Demo: 验证核心机能的演示程序集
 ## 设计目的
  - 用于验证各项子系统核心服务机能。
  - 加权评估引擎。

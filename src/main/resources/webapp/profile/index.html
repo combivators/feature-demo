@@ -1,10 +1,10 @@
 {% extends "sidebar/layout" %}
 {% block "page" %}
-    <h2><a>Top</a> / <a>Profile</a></h2>
+    <h3><a>Top</a> / <a>Profile</a></h3>
     <div class="row">
       <div class="col-lg-12">
         <div class="page-header">
-          <h1 id="forms">プロフィール</h1>
+          <h3 id="forms">プロフィール</h3>
         </div>
         <div class="tab-form">
           <ul class="nav nav-tabs">
@@ -21,42 +21,58 @@
             <div class="tab-pane fade show active" id="input-base">
               <div class="row">
                 <div class="col-sm-9">
-                  <div class="form-group row">
-                      <label for="firstname" class="col-sm-2 col-form-label text-md-center">姓*</label>
-                      <div class="col-sm-4">
-                      <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Enter your first name">
-                      </div>
-                      <label for="lastname" class="col-sm-2 col-form-label text-md-center">名*</label>
-                      <div class="col-sm-4">
-                      <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Enter your last name">
-                      </div>
+                  <div class="form-group input-group">
+                      <span style="width: 20%;" class="input-group-addon">姓名</span>
+                      <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First name">
+                      <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last name">
                   </div>
-                  <div class="form-group row">
-                    <label for="nick" class="col-sm-2 col-form-label">ニックネーム</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="nick" name="nick" placeholder="Enter your nick name">
+                  <div class="form-group input-group">
+                      <span style="width: 20%;" class="input-group-addon">ニックネーム</span>
+                      <input type="text" class="form-control" id="nick" name="nick" placeholder="Nick name">
+                  </div>
+                  <div class="form-group input-group date">
+                    <span style="width: 20%;" class="input-group-addon">生年月日</span>
+                    <input type="text" class="form-control datetimepicker-input" data-target="#birthday" id="birthday" name="birthday" placeholder="YYYY/MM/DD">
+                    <div class="input-group-append" data-target="#birthday" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
                     </div>
                   </div>
-                  <div class="form-group row">
-                    <label for="birthday" class="col-sm-2 col-form-label">生年月日</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="birthday" name="birthday" placeholder="Enter your birthday">
+                  <div class="form-group input-group">
+                    <span style="width: 20%;" class="input-group-addon">性別</span>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="sex" id="male" value="male">
+                      <label class="form-check-label" for="male"><i class="fas fa-male"></i>&nbsp;男性</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="sex" id="female" value="female">
+                      <label class="form-check-label" for="female"><i class="fas fa-female"></i>&nbsp;女性</label>
                     </div>
                   </div>
-                  <div class="form-group row">
-                    <label for="sex" class="col-sm-2 col-form-label">性別</label>
-                    <div class="col-sm-1"></div>
-                    <div class="custom-control custom-radio col-sm-2">
-                      <input type="radio" id="male" name="sex" class="custom-control-input">
-                      <label class="custom-control-label text-md-right" for="male">男性</label>
+                  <div class="form-group input-group">
+                    <span style="width: 20%;" class="input-group-addon">未既婚</span>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="civil" id="unmarried" value="unmarried">
+                      <label class="form-check-label" for="unmarried">未婚</label>
                     </div>
-                    <div class="custom-control custom-radio col-sm-2">
-                      <input type="radio" id="female" name="sex" class="custom-control-input">
-                      <label class="custom-control-label text-md-right" for="female">女性</label>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="civil" id="married" value="married">
+                      <label class="form-check-label" for="married">既婚</label>
                     </div>
                   </div>
-                  <div class="form-group row">
-                    <button type="submit" class="btn btn-primary">送信</button>
+                  <div class="form-group input-group">
+                    <span style="width: 20%;" class="input-group-addon">子供</span>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="parent" id="notparent" value="notparent">
+                      <label class="form-check-label" for="notparent">なし</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="parent" id="isparent" value="isparent">
+                      <label class="form-check-label" for="isparent">あり</label>
+                    </div>
+                  </div>
+                  <div class="row"></div>
+                  <div class="form-group input-group">
+                    <button type="submit" class="btn btn-primary">登録</button>
                   </div>
                 </div><!-- left col -->
                 <div class="col-sm-3">
@@ -66,19 +82,23 @@
 
             <!--  Credential -->
             <div class="tab-pane fade" id="input-credential">
-              <div class="form-group">
-                <label for="email">メールアドレス</label>
-                <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="you@email.com">
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="password" class="col-form-label">パスワード</label>
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="repassword" class="col-form-label">パスワード確認</label>
+                  <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Verify password">
+                </div>
               </div>
               <div class="form-group">
-                <label for="password">パスワード</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password">
+                <label for="email" class="col-form-label">メールアドレス</label>
+                <input type="text" class="form-control" id="email" name="email" placeholder="you@email.com">
               </div>
               <div class="form-group">
-                <label for="repassword">パスワード確認</label>
-                <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Verify password">
+                <button type="submit" class="btn btn-primary">変更</button>
               </div>
-              <button type="submit" class="btn btn-primary">送信</button>
             </div>
             <!--  Contact -->
             <div class="tab-pane fade" id="input-contact">
@@ -115,8 +135,8 @@
             <!--  Education -->
             <div class="tab-pane fade" id="input-education">
               <div class="form-group">
-                <label for="exampleTextarea">テキストエリア</label>
-                <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+                <label for="exampleTextarea1">テキストエリア</label>
+                <textarea class="form-control" id="exampleTextarea1" rows="3"></textarea>
               </div>
               <button type="submit" class="btn btn-primary">送信</button>
             </div>
@@ -124,8 +144,8 @@
             <!--  Experience -->
             <div class="tab-pane fade" id="input-education">
               <div class="form-group">
-                <label for="exampleTextarea">テキストエリア</label>
-                <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+                <label for="exampleTextarea2">テキストエリア</label>
+                <textarea class="form-control" id="exampleTextarea2" rows="3"></textarea>
               </div>
               <button type="submit" class="btn btn-primary">送信</button>
             </div>
@@ -141,8 +161,8 @@
             <!--  Other -->
             <div class="tab-pane fade" id="input-other">
               <div class="form-group">
-                <label for="exampleTextarea">テキストエリア</label>
-                <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+                <label for="exampleTextarea3">テキストエリア</label>
+                <textarea class="form-control" id="exampleTextarea3" rows="3"></textarea>
               </div>
               <button type="submit" class="btn btn-primary">送信</button>
             </div>

@@ -38,7 +38,7 @@
     <jaxb.version>2.3.1</jaxb.version> <!-- 2.3.0, 2.3.1  -->
     <ejb.version>3.2</ejb.version>
 
-    <h2.version>1.4.198</h2.version>
+    <h2.version>1.4.200</h2.version>
     <junit5.version>5.5.2</junit5.version>
     <junit.platform.version>1.5.2</junit.platform.version>
     <junit.version>${junit5.version}</junit.version>
@@ -262,11 +262,30 @@
       <version>1.0.0</version>
     </dependency>
     <dependency>
+      <groupId>net.tiny</groupId>
+      <artifactId>feature-entity</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
         <groupId>javax.ws.rs</groupId>
         <artifactId>javax.ws.rs-api</artifactId>
         <version>2.1.1</version>
     </dependency>
+
+    <!-- RDMS H2 database -->
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+    </dependency>
+
     <!-- Unit Testing -->
+    <dependency>
+      <groupId>net.tiny</groupId>
+      <artifactId>tiny-unit</artifactId>
+      <version>1.0.0</version>
+      <scope>test</scope>
+    </dependency>
+
     <!-- JUnit5 Testing -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>

@@ -9,11 +9,11 @@ import javax.ws.rs.core.MediaType;
 
 import net.tiny.ws.mvc.ModelAndView;
 
-@Path("/home/demo")
+@Path("/")
 public class SidebarSerice {
 
     @GET
-    @Path("sidebar")
+    @Path("ui/sidebar")
     @Produces(value = MediaType.TEXT_HTML)
     public ModelAndView home() {
         ModelAndView mv = new ModelAndView("sidebar/index.html");

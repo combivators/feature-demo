@@ -1,0 +1,26 @@
+<!DOCTYPE html><!-- https://bootstrapious.com/tutorial/sidebar/index4.html simple-sidebar2.html -->
+<html lang="en">
+<head>
+  <!--Under MIT licence-->
+  <meta charset="UTF-8">
+  <title>Feature Platform</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Feature Platform">
+  <meta name="keywords" content="Maching Platform">
+  <meta name="author" content="combivators">
+{% include "top/styles" %}
+{% block "style" %}{% endblock %}
+</head>
+
+<body>
+<div class="container" id="container">
+{% block "page" %}{% endblock %}
+</div><!-- container -->
+</body>
+
+<!--Scripts-->
+{% include "top/scripts" %}
+{% block "script" %}{% endblock %}
+<!--Scripts end-->
+</html>

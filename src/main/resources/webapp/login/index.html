@@ -1,0 +1,63 @@
+{% extends "login/layout" %}
+{% block "page" %}
+  <div class="form-container sign-up-container">
+    <form action="#">
+      <h1>Create Account</h1>
+      <div class="social-container">
+        <a href="#" class="social"><i class="fab fa-weixin text-success"></i></a>
+        <a href="#" class="social"><i class="fab fa-google-plus-g text-danger"></i></a>
+        <a href="#" class="social"><i class="fab fa-facebook-f text-primary"></i></a>
+        <a href="#" class="social"><i class="fab fa-line text-success"></i></a>
+        <a href="#" class="social"><i class="fab fa-linkedin-in text-primary"></i></a>
+      </div>
+      <span>Or use your email for registration</span>
+      <div style="max-width:260px"><div class="input-icons">
+      <i class="fas fa-user icon"></i><input type="text" class="input-field" placeholder="Name" />
+      <i class="fas fa-envelope icon"></i><input type="email" class="input-field" placeholder="Email" />
+      <i class="fas fa-eye icon"></i><input type="password" class="input-field" placeholder="Password" />
+      </div></div>
+      <button type="submit" class="btn btn-primary rounded-pill w-50"><i class="fas fa-user-shield"></i> Sign Up</button>
+    </form>
+  </div>
+  <div class="form-container sign-in-container">
+    <form role="form" action="#">
+      <h1>Sign in</h1>
+      <div class="social-container">
+        <a href="#" class="social"><i class="fab fa-weixin text-success"></i></a>
+        <a href="#" class="social"><i class="fab fa-google-plus-g text-danger"></i></a>
+        <a href="#" class="social"><i class="fab fa-facebook-f text-primary"></i></a>
+        <a href="#" class="social"><i class="fab fa-line text-success"></i></a>
+        <a href="#" class="social"><i class="fab fa-linkedin-in text-primary"></i></a>
+      </div>
+      <span>Or use your account</span>
+      <div style="max-width:260px"><div class="input-icons">
+      <i class="fas fa-user icon"></i><input type="email" class="input-field" placeholder="Username">
+      <i class="fas fa-eye icon"></i><input type="password" class="input-field" placeholder="Password">
+      <!--
+      <input type="checkbox" value="" checked> Remember me
+      -->
+
+      </div></div>
+      <a href="#">Forgot your password?</a>
+      <button type="submit" class="btn btn-primary rounded-pill w-50"><i class="fas fa-power-off"></i> Sign In</button>
+    </form>
+  </div>
+  <div class="overlay-container">
+    <div class="overlay">
+      <div class="overlay-panel overlay-left">
+        <h1>Welcome Back!</h1>
+        <p>Please login with your personal account</p>
+        <button id="signIn" class="btn btn-outline-light btn-primary rounded-pill w-50">Sign In <i class="fas fa-arrow-left"></i></button>
+      </div>
+      <div class="overlay-panel overlay-right">
+        <h1>Hello, Friend!</h1>
+        <p>Enter your personal details and start journey with us</p>
+        <button id="signUp" class="btn btn-outline-light btn-primary rounded-pill w-50"><i class="fas fa-arrow-right"></i> Sign Up</button>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block "script" %}
+<script>
+</script>
+{% endblock %}

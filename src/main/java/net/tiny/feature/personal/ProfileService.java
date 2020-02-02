@@ -11,16 +11,14 @@ import javax.ws.rs.core.MediaType;
 import net.tiny.service.ServiceContext;
 import net.tiny.ws.mvc.ModelAndView;
 
-// @see https://bootsnipp.com/snippets/5Moza civil 未既婚 parent 子供
-
-@Path("/home/profile")
+@Path("/")
 public class ProfileService {
 
     @Resource
     private ServiceContext serviceContext;
 
     @GET
-    @Path("edit")
+    @Path("ui/profile/edit")
     @Produces(value = MediaType.TEXT_HTML)
     public ModelAndView edit() {
         //PropertiesEditor editor = getPropertiesEditor();

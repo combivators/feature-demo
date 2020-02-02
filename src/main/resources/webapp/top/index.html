@@ -1,0 +1,599 @@
+{% extends "top/layout" %}
+{% block "style" %}
+  <style type="text/css">
+  .jumbotron.special {
+    position: relative;
+    min-height: 740px;
+    margin: 0;
+    /*margin-bottom: 0;*/
+    overflow: hidden;
+    background-color: #f0f8ff;
+    background-image: url("/images/circle.png");
+    background-repeat: no-repeat;
+    background-position: -35% center;
+    background-size: 70%;
+  }
+
+  .jumbotron.special .centred {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .container.box {
+    position: absolute;
+    top:   200px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #tagcanvas {
+      padding-left: 0;
+      padding-right: 0;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+      width: 960px;
+  }
+  #tags {
+    display: none;
+  }
+
+  @media (max-width: 767.98px) {
+  }
+
+  footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 32px;
+  }
+
+  /* Search box as animation icon use font-awesome-animation */
+  .form-search{
+      position: relative;
+      top: 50%;
+      left: 90%;
+      transform: translate(-90%,-10%);
+      transition: all 1s;
+      width: 50px;
+      height: 50px;
+      background: white;
+      box-sizing: border-box;
+      border-radius: 25px;
+      border: 4px solid white;
+      padding: 5px;
+  }
+
+  .form-search input{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;;
+      height: 42.5px;
+      line-height: 30px;
+      outline: 0;
+      border: 0;
+      display: none;
+      font-size: 1em;
+      border-radius: 20px;
+      padding: 0 20px;
+  }
+
+  .fa-search{
+      /*box-sizing: border-box;*/
+      padding: 10px;
+      width: 42.5px;
+      height: 42.5px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      border-radius: 50%;
+      background: #f0f8ff;
+      text-shadow: 1px 1px #a9a9a9;
+      color: #4169e1;
+      text-align: center;
+      font-size: 1.6em;
+      transition: all 1s;
+  }
+
+  .form-search:hover{
+      width: 70%;
+      cursor: pointer;
+  }
+
+  .form-search:hover input{
+      display: block;
+  }
+
+  .form-search:hover .fa-search{
+      background: #f0f8ff;
+      color: white;
+  }
+
+  /* Login Modal Style */
+  .modal-login {
+    color: #636363;
+    width: 350px;
+  }
+  .modal-login .modal-content {
+    padding: 20px;
+    border-radius: 5px;
+    border: none;
+  }
+  .modal-login .modal-header {
+    border-bottom: none;
+        position: relative;
+        justify-content: center;
+  }
+  .modal-login h4 {
+    text-align: center;
+    font-size: 26px;
+    margin: 30px 0 -15px;
+  }
+  .modal-login .form-control:focus {
+    border-color: #70c5c0;
+  }
+  .modal-login .form-control, .modal-login .btn {
+    min-height: 40px;
+    border-radius: 3px;
+  }
+  .modal-login .close {
+        position: absolute;
+    top: -5px;
+    right: -5px;
+  }
+  .modal-login .modal-footer {
+    background: #ecf0f1;
+    border-color: #dee4e7;
+    text-align: center;
+    justify-content: center;
+    margin: 0 -20px -20px;
+    border-radius: 5px;
+    /*font-size: 13px;*/
+  }
+  .modal-login .modal-footer a {
+    color: #999;
+  }
+  .modal-login .avatar {
+    position: absolute;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    top: -70px;
+    width: 95px;
+    height: 95px;
+    border-radius: 50%;
+    z-index: 9;
+    background: #60c7c1;
+    padding: 15px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+  }
+  .modal-login .avatar img {
+    width: 100%;
+  }
+  .modal-login.modal-dialog {
+    margin-top: 80px;
+  }
+  .modal-login .btn {
+    color: #fff;
+    border-radius: 4px;
+    background: #60c7c1;
+    text-decoration: none;
+    transition: all 0.4s;
+        line-height: normal;
+        border: none;
+    }
+  .modal-login .btn:hover, .modal-login .btn:focus {
+    background: #45aba6;
+    outline: none;
+  }
+  </style>
+{% endblock %}
+{% block "page" %}
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+      <a class="navbar-brand" href="./">
+        <img src="/images/logo.png" width="32" height="32" class="d-inline-block align-top mr-1" alt="Combivators">
+        Combivators
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navbar">
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <button role="button" type="button" class="btn" id="dropdownMenuHelp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="far fa-question-circle fa-lg fa-fw text-muted"></i>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuHelp" role="menu">
+                <li>
+                  <span class="fa-stack">
+                    <i class="far fa-circle text-primary fa-stack-2x"></i>
+                    <i class="fas fa-comment-dollar text-primary fa-stack-1x"></i>
+                  </span> Enterprise
+                </li>
+                <li>
+                  <span class="fa-stack">
+                    <i class="far fa-circle text-success fa-stack-2x"></i>
+                    <i class="fas fa-child text-success fa-stack-1x"></i>
+                  </span> Person
+                </li>
+                <li>
+                  <span class="fa-stack">
+                    <i class="far fa-circle text-danger fa-stack-2x"></i>
+                    <i class="fas fa-map-pin text-danger fa-stack-1x"></i>
+                  </span> Sponsor
+                </li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <button role="button" type="button" class="btn" id="dropdownMenuSetting" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-th fa-lg fa-fw text-muted"></i>
+              <!--
+              <i class="fas fa-sliders-h fa-lg fa-fw text-muted"></i>
+              -->
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuSetting" role="menu">
+              <button class="dropdown-item" type="button" class="btn btn-primary" onclick="changeShape('sphere')"><i class="fas fa-arrows-alt fa-fw"></i> 云球旋转</button>
+              <button class="dropdown-item" type="button" class="btn btn-primary" onclick="changeShape('hcylinder')"><i class="fas fa-arrows-alt-v fa-fw"></i> 垂直旋转</button>
+              <button class="dropdown-item" type="button" class="btn btn-primary" onclick="changeShape('vcylinder')"><i class="fas fa-arrows-alt-h fa-fw"></i> 水平旋转</button>
+              <button class="dropdown-item" type="button" class="btn btn-primary" onclick="changeHelixShape()"><i class="fas fa-random fa-fw"></i> 双螺旋旋转</button>
+              <button class="dropdown-item" type="button" class="btn btn-primary" onclick="changeType(this)"><i class="fas fa-adjust fa-fw"></i> 变幻字体</button>
+              <button class="dropdown-item" type="button" class="btn btn-primary" onclick="changeMode(this)"><i class="fas fa-sync-alt fa-fw"></i> 表示切换</button>
+              <button class="dropdown-item" type="button" class="btn btn-primary" onclick="changeBackground(this)"><i class="fas fa-retweet fa-fw"></i> 背景色</button>
+              <button class="dropdown-item" type="button" class="btn btn-primary" onclick="testFunction(this)"><i class="fas fa-recycle fa-fw"></i> 测试</button>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <button role="button" type="button" class="btn" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-ellipsis-h fa-lg fa-fw text-muted"></i>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" role="menu">
+              <button type="button" class="dropdown-item btn btn-success" data-toggle="modal" data-target="#signinModal"><i class="fas fa-power-off fa-fw text-success"></i> Sign In</button>
+              <button type="button" class="dropdown-item btn btn-primary"><i class="fas fa-user-shield fa-fw text-primary"></i> Sign Up</button>
+              <button type="button" class="dropdown-item btn btn-warning"><i class="fas fa-puzzle-piece fa-fw text-warning"></i> Something</button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div id="jumbotron_special" class="jumbotron special">
+  <div class="centred">
+    <canvas id="tagcanvas" width="960" height="740" style="max-width: 960px; width: 100%; height: 100%"></canvas>
+  </div> <!-- centred -->
+  <div id="tags">
+    <ul id="weightTags" class="weighted" style="font-size: 50%"></ul>
+  </div> <!-- tags -->
+
+  <!-- search box -->
+  <div class="container box">
+    <form name="search-form" class="form-search bg-transparent">
+      <input type="search" id="search" name="search" placeholder="Search..." />
+      <i id="ic-search" class="fa fa-search"></i>
+    </form>
+  </div><!-- container -->
+
+</div><!-- jumbotron -->
+
+<!-- Login Modal HTML -->
+<div id="signinModal" class="modal fade">
+  <div class="modal-dialog modal-login">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="avatar">
+          <img src="/images/avatar.png" alt="Avatar">
+        </div>
+        <h4 class="modal-title">Login</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form action="" method="post">
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fa fa-user"></i></span>
+              </div>
+              <input type="text" class="form-control" name="username" placeholder="Username" required="required">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fa fa-lock"></i></span>
+              </div>
+              <input type="password" class="form-control" name="password" placeholder="Password" required="required">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="pull-left checkbox-inline"><input type="checkbox"> Remember me</label>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-lg btn-block login-btn">Sign in</button>
+          </div>
+          <div class="clearfix">
+            <a href="#" class="pull-right">Forgot Password?</a>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <p class="text-center small">Don't have an account! <a href="#">Sign up here</a>.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="small">
+  <div class="container text-center copyright">
+  &copy; 2019 Combivators
+  </div>
+</footer>
+{% endblock %}
+{% block "script" %}
+<script>
+var entries = [
+    { image: '/images/icon-01.png', width: '30', height: '30', url: '#01', target: '_top', tooltip: '*Ad1', weight: '54'},
+    { image: '/images/icon-02.png', width: '30', height: '30', url: '#02', target: '_top', tooltip: '*Ad2', weight: '50' },
+    { image: '/images/icon-03.png', width: '30', height: '30', url: '#03', target: '_top', tooltip: '*Ad3', weight: '52' },
+    { image: '/images/icon-04.png', width: '30', height: '30', url: '#04', target: '_top', tooltip: 'G.OO', weight: '40' },
+    { image: '/images/icon-05.png', width: '30', height: '30', url: '#05', target: '_top', tooltip: 'Y.AH', weight: '32' },
+    { image: '/images/icon-06.png', width: '30', height: '30', url: '#06', target: '_top', tooltip: 'M.IC', weight: '40' },
+    { image: '/images/icon-07.png', width: '30', height: '30', url: '#07', target: '_top', tooltip: 'J.W' , weight: '30' },
+    { image: '/images/icon-08.png', width: '30', height: '30', url: '#08', target: '_top', tooltip: 'X.HM', weight: '31' },
+    { image: '/images/icon-09.png', width: '30', height: '30', url: '#09', target: '_top', tooltip: 'L.XX', weight: '42' },
+    { image: '/images/icon-10.png', width: '30', height: '30', url: '#10', target: '_top', tooltip: 'C.H' , weight: '34' },
+    { image: '/images/icon-11.png', width: '30', height: '30', url: '#11', target: '_top', tooltip: '#IBM', weight: '11'},
+    { image: '/images/icon-12.png', width: '30', height: '30', url: '#12', target: '_top', tooltip: '#Y!J', weight: '14' },
+    { image: '/images/icon-13.png', width: '30', height: '30', url: '#13', target: '_top', tooltip: '#NRI', weight: '15' },
+    { image: '/images/icon-14.png', width: '30', height: '30', url: '#14', target: '_top', tooltip: 'R.SH', weight: '40' },
+    { image: '/images/icon-15.png', width: '30', height: '30', url: '#15', target: '_top', tooltip: 'W.SK', weight: '38' },
+    { image: '/images/icon-16.png', width: '30', height: '30', url: '#16', target: '_top', tooltip: 'T.RB', weight: '42' },
+    { image: '/images/icon-17.png', width: '30', height: '30', url: '#17', target: '_top', tooltip: 'E.BJ', weight: '36' },
+    { image: '/images/icon-18.png', width: '30', height: '30', url: '#18', target: '_top', tooltip: 'Y.TS', weight: '38' },
+    { image: '/images/icon-19.png', width: '30', height: '30', url: '#19', target: '_top', tooltip: 'I.GO', weight: '10' },
+    { image: '/images/icon-20.png', width: '30', height: '30', url: '#20', target: '_top', tooltip: 'L.SM', weight: '34' }
+  ];
+
+//-- 背景色
+var specials = {
+  alice:    '#f0f8ff',
+  cornsilk: '#fff8dc',
+  blush:    '#fff0f5',
+  honey:    '#f0fff0',
+  baby:     '#bbe2f1',
+  snow:     '#fffafa'
+};
+var gradient = {
+   0:    '#f00', // red
+   0.33: '#ff0', // yellow
+   0.66: '#0f0', // green
+   1:    '#00f'  // blue
+};
+/*
+var gradients = [{
+   0:   'red',            // red
+   0.5: 'orange',         // orange
+   1:   'rgba(0,0,0,0.1)' // black, but 90% transparent
+  }, {
+   0:   '#000',           // black
+   1:   '#fff'            // white
+  }
+];
+
+var oopts = {
+   textFont: 'Impact,Arial Black,sans-serif',
+   textHeight: 20,
+   minSpeed: 0.01,
+   maxSpeed: 0.05,
+   decel: 0.9,
+   depth: 0.99,
+   outlineColour: '#f6f',
+   outlineThickness: 3,
+   pulsateTo: 0.2,
+   pulsateTime: 0.5,
+   wheelZoom: false
+  };
+*/
+var weightOptions = {
+   colour: { weightMode: 'colour' },
+   both: { weightMode: 'both' },
+   bgcolour: { weightMode: 'bgcolour', padding: 2, bgRadius: 5 },
+   bgoutline: { weightMode:'bgoutline', bgOutlineThickness: 3, padding: 2, bgRadius: 5},
+};
+
+var cloud = "tagcanvas", wtags = 'weightTags', lock, shape = 'sphere', mode = 'text', wopt ='colour', opts = weightOptions[wopt], sbc = 'alice';
+
+var matchOpts = {
+  canvasId: cloud,
+  weightedId: wtags,
+  append: true
+};
+
+window.onload = function() {
+  TagCanvas.textFont = 'Trebuchet MS, Helvetica, sans-serif';
+  TagCanvas.textColour = '#00f';
+  TagCanvas.textHeight = 25;
+  TagCanvas.outlineMethod = 'block';
+  TagCanvas.outlineColour = '#acf';
+  TagCanvas.outlineThickness = 5;
+  TagCanvas.minSpeed = 0.0;
+  TagCanvas.maxSpeed = 0.03;
+  TagCanvas.minBrightness = 0.2;
+  TagCanvas.depth = 0.92;
+  TagCanvas.pulsateTo = 0.6;
+  TagCanvas.initial = [0.1,-0.1];
+  TagCanvas.decel = 0.98;
+  TagCanvas.reverse = true;
+  TagCanvas.hideTags = false;
+  TagCanvas.shadow = '#ccf';
+  TagCanvas.shadowBlur = 3;
+  TagCanvas.weight = true;
+  TagCanvas.weightFrom = 'data-weight';
+  TagCanvas.weightMode = 'both';
+  TagCanvas.weightGradient = gradient;
+  TagCanvas.imageScale = null;
+  TagCanvas.imageMode = mode;
+  TagCanvas.fadeIn = 1000;
+  TagCanvas.clickToFront = 600;
+  try {
+    buildTags(wtags, entries);
+    TagCanvas.Start(cloud, wtags, opts);
+    $('#search').matching( matchOpts );
+  } catch(e) {
+    console.log("Error!");
+    document.getElementsByTagName('canvas')[0].style.border='0';
+  }
+};
+
+function restart() {
+  TagCanvas.shape = shape;
+  TagCanvas.imageMode = mode;
+  TagCanvas.lock = lock;
+  TagCanvas.Start(cloud, wtags, opts);
+}
+
+function changeShape(s) {
+  var locks = { hcylinder: 'x', vcylinder: 'y', hring: 'x', vring: 'y', sphere: '' };
+  lock = locks[s] || '';
+  shape = s;
+  TagCanvas.initial = (lock == 'x' && [0,0.2]) || (lock == 'y' && [0.2,0]) || [0.2,0.2];
+  restart();
+}
+
+function changeBackground(e) {
+    if (sbc == 'alice') {
+      sbc = 'cornsilk';
+    } else if(sbc == 'cornsilk') {
+      sbc = 'blush';
+    } else if(sbc == 'blush') {
+      sbc = 'honey';
+    } else if(sbc == 'honey') {
+      sbc = 'baby';
+    } else if(sbc == 'baby') {
+      sbc = 'snow';
+    } else if(sbc == 'snow') {
+        sbc = 'alice';
+    }
+    document.getElementById('jumbotron_special').style.backgroundColor = specials[sbc];
+    document.getElementById('ic-search').style.backgroundColor = specials[sbc];
+}
+
+//Add 2019/11/13
+function changeMode(e) {
+  if (mode != 'text') {
+    mode = 'text';
+  } else if(mode != 'image') {
+    mode = 'image';
+  }
+  restart();
+}
+
+function changeType(e){
+  if (mode != 'image') {
+    if (wopt == 'colour') {
+      wopt = 'both';
+    } else if(wopt == 'both') {
+      wopt = 'bgcolour';
+    } else if(wopt == 'bgcolour') {
+      wopt = 'bgoutline';
+    } else if(wopt == 'bgoutline') {
+      wopt = 'colour';
+    }
+    opts = weightOptions[wopt];
+    restart();
+  }
+}
+
+//双螺旋
+function changeHelixShape() {
+　if (opts['shape'] == 'helix') {
+    opts = {shape: "PointsOnSphere", lock: "x" };
+　} else {
+    opts = {shape: "helix", lock: "x" };
+  }
+  restart();
+}
+
+//双螺旋
+function helix(n, rx, ry, rz) {
+  var a = Math.PI / n, i, j, p = [],
+    z = rz * 2 / n;
+  for(i = 0; i < n; ++i) {
+    j = a * i;
+    if(i % 2)
+      j += Math.PI;
+    p.push([rx * Math.cos(j),
+      rz - z * i,
+      ry * Math.sin(j)]);
+  }
+  return p;
+}
+
+
+function buildTags(id, e) {
+  var weightTags = document.getElementById(id);
+  console.log("buildTags " + e.length);
+  // Clear all entries
+  weightTags.innerHTML = '';
+  for (var i=0; i<e.length; i++) {
+    appendTag(weightTags, e[i]);
+  }
+}
+
+function rebuildTags(id, e, filter) {
+  var weightTags = document.getElementById(id);
+  console.log("rebuildTags " + e.length);
+  weightTags.innerHTML = '';
+  for (var i=0; i<e.length; i++) {
+    appendTag(weightTags, e[i], filter);
+  }
+}
+
+//-- Build tags <li><a href="url"><img src="icon.png"></img></a>
+function appendTag(ul, e, filter) {
+  if (!(filter === undefined)) {
+    if (!filter(e)) {
+      return;
+    }
+  }
+  var li = document.createElement("li");
+  var anchor = document.createElement("a");
+  anchor.setAttribute('href', e.url);
+  //anchor.target = e.target;
+  //anchor.setAttribute('data-toggle', 'tooltip');
+  //anchor.setAttribute('title', e.tooltip);
+  //anchor.setAttribute('onclick', 'return tpu(this)');
+  anchor.setAttribute('data-weight', e.weight);
+  var img = document.createElement("img");
+  img.src = e.image;
+  anchor.appendChild(img);
+  var content = document.createTextNode(e.tooltip);
+  anchor.appendChild(content);
+  li.appendChild(anchor);
+  ul.appendChild(li);
+  //Listen for the event.
+  anchor.addEventListener('click', function(e){
+    // Clicked anchor callback
+    console.log("Callback Clicked href=" + anchor.href);
+    }, false);
+}
+
+function tagsFilter(e) {
+  console.log("do filter...");
+  return (e.weight > 50 || e.weight < 20) || (e.weight > 30 && e.weight < 40);
+}
+
+function testFunction(e) {
+  rebuildTags(wtags, entries, tagsFilter);
+  TagCanvas.Reload(cloud);
+}
+</script>
+{% endblock %}

@@ -9,7 +9,7 @@ logging:
     net.tiny:    FINE
 
 #
-main: ${launcher}
+main: ${launcher.ws}, ${launcher.db}
 #shutdown = ${hook}
 daemon: true
 executor: ${pool}
@@ -20,18 +20,33 @@ pool:
   max:     10
   timeout: 3
 launcher:
-  class: net.tiny.ws.Launcher
-  builder:
-    port: 8080
-#   bind: 192.168.1.1
-    backlog: 10
-    stopTimeout: 1
-    executor: ${pool}
-    handlers: ${handler.resource}, ${handler.sys}, ${handler.rest}
-#    ssl:
-#      file:       ks
-#      password:   12345
-#      clientAuth: false
+  ws:
+    class: net.tiny.ws.Launcher
+    builder:
+      port: 8080
+#     bind: 192.168.1.1
+      backlog: 10
+      stopTimeout: 1
+      executor: ${pool}
+      handlers: ${handler.resource}, ${handler.sys}, ${handler.rest}, ${handler.api}, ${handler.ui}
+#      ssl:
+#        file:       ks
+#        password:   12345
+#        clientAuth: false
+  db:
+    class: net.tiny.db.Launcher
+    builder: 
+#      port: 9001
+#      base: /h2
+#      name: h2
+      changed: sa
+      create:  true
+      allow:   true
+      batch:   true
+      clear:   true
+      script:  ./src/test/resources/sql/create_sequence.sql
+      load:  ./src/test/resources/csv
+      producer: ${jpa.producer}
 
 handler:
   resource:
@@ -48,11 +63,25 @@ handler:
     path:    /sys
     auth:    ${auth.simple}
     filters: ${filter.logger}
+    context: ${service.context}
 #
   rest:
     class:       net.tiny.ws.rs.RestfulHttpHandler
     path:        /home
     filters:     ${filter.logger}
+    application: ${rest.application}
+    renderer :   ${renderer.html}
+    listener:    ${rest.monitor}
+  api:
+    class:       net.tiny.ws.rs.RestfulHttpHandler
+    path:        /api
+    filters:     ${filter.jpa}, ${filter.logger}
+    application: ${rest.application}
+    listener:    ${rest.monitor}
+  ui:
+    class:       net.tiny.ws.rs.RestfulHttpHandler
+    path:        /ui
+    filters:     ${filter.jpa}, ${filter.logger}
     application: ${rest.application}
     renderer :   ${renderer.html}
     listener:    ${rest.monitor}
@@ -65,6 +94,9 @@ filter:
      class: net.tiny.ws.CorsResponseFilter
    snap:
      class: net.tiny.ws.SnapFilter
+   jpa:
+     class: net.tiny.dao.HttpTransactionFilter
+     producer: ${jpa.producer}
 #
 auth:
 #
@@ -80,13 +112,23 @@ rest:
   application:
     class:   net.tiny.ws.rs.RestApplication
     pattern: net.tiny.message.*, net.tiny.feature.*
-    jars:    .*/classes/, .*/feature-.*[.]jar, .*/tiny-.*[.]jar, !.*/tiny-dic.*[.]jar
+    scan:    .*/classes/, .*/feature-.*[.]jar, .*/tiny-.*[.]jar, !.*/tiny-dic.*[.]jar
     loggingLevel: info
-  service:
-    class:   net.tiny.ws.rs.RestServiceLocator
-#   listener: ${rest.monitor}
+  service:   ${service.context}
+#    class:   net.tiny.ws.rs.RestServiceLocator
+#    listener: ${rest.monitor}
   monitor:
     class: net.tiny.ws.rs.RestServiceLocator$RestServiceMonitor
+#
+service:
+  context:
+    class: net.tiny.ws.rs.RestServiceLocator
+#
+jpa:
+  producer:
+    class: net.tiny.dao.EntityManagerProducer
+    profile: local
+
 #
 renderer:
   html:
@@ -104,3 +146,9 @@ res:
   editor:
     class: net.tiny.feature.web.PropertiesEditor
     path:  /opt/demo/i18n
+image:
+  fas:
+    class:     net.tiny.feature.demo.BrandImage
+    cacheSize: 100
+#    maxAge: 86400   
+#    path: /home/fontawesome-free-5.11.2-web

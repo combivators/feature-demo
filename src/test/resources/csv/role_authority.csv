@@ -1,0 +1,11 @@
+role,authorities
+1,"admin:cache"
+1,"admin:static"
+1,"admin:index"
+1,"admin:tag"
+1,"admin:member"
+1,"admin:navigation"
+1,"admin:article"
+1,"admin:articleCategory"
+1,"admin:ad"
+1,"admin:template"

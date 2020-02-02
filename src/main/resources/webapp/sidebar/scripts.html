@@ -3,11 +3,19 @@
 <script src="/bootstrap-4.3.1/js/bootstrap.min.js"></script>
 <script src="/bootstrap-treeview/js/bootstrap-treeview.min.js"></script>
 <script src="/ion-rangeslider/2.3.0/js/ion.rangeSlider.min.js"></script>
+<script src="/datetimepicker/js/tempusdominus-bootstrap-4.js"></script>
 <!-- Menu Toggle Script -->
 <script>
 $(document).ready(function () {
     $('#sidebarCollapse').on('click', function () {
         $('#sidebar').toggleClass('active');
     });
+    $('#birthday').datetimepicker({
+        viewMode: 'years',
+        format: 'YYYY/MM/DD',
+        locale: 'ja',
+        yearSuffix: '年',
+        dayViewHeaderFormat: 'YYYY MMMM'
+      });
 });
 </script>
