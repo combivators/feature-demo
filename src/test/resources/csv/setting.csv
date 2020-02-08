@@ -1,0 +1,2 @@
+id,site_name,site_url,site_enabled,powered_by,logo,seo,address,post,phone,email,smtp_host,smtp_port,smtp_user,smtp_password,mail_type,template,jwt,public_key,private_key,updated,updater,modified
+"default","Platform","http://localhost:8080/",true,"Company","/image/logo.png","Platform","Tokyo, Japan","100-0000","+8100-000000","info@company.com","localhost",25,"smtp","password","text/html","webapp","HS256",,,,"admin","2019-01-01 23:59:59"

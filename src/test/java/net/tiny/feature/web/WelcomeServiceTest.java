@@ -20,6 +20,7 @@ import net.tiny.ws.WebServiceHandler;
 import net.tiny.ws.mvc.HtmlRenderer;
 import net.tiny.ws.mvc.ViewRenderer;
 import net.tiny.ws.rs.RestApplication;
+import net.tiny.ws.rs.RestServiceLocator;
 import net.tiny.ws.rs.RestfulHttpHandler;
 import net.tiny.ws.rs.client.RestClient;
 
@@ -33,18 +34,27 @@ public class WelcomeServiceTest {
         LogManager.getLogManager().readConfiguration(
                 Thread.currentThread().getContextClassLoader().getResourceAsStream("logging.properties"));
 
-        final AccessLogger logger = new AccessLogger();
+        RestServiceLocator context = new RestServiceLocator();
+        PropertiesEditor editor = new PropertiesEditor();
+        editor.setPath("src/test/resources/data");
+        context.bind("editor", editor, true);
+
         final RestApplication application = new RestApplication();
         application.setPattern("net.tiny.message.*, net.tiny.feature.*, !com.sun.*, !org.junit.*,");
+        application.setScan(".*/classes/, .*/test-classes/, .*/feature-.*[.]jar, .*/tiny-.*[.]jar, !.*/tiny-dic.*[.]jar");
+        context.bind("application", application, true);
 
         final ViewRenderer renderer = new HtmlRenderer();
+        context.bind("renderer", renderer, true);
 
         final RestfulHttpHandler rest = new RestfulHttpHandler();
-        rest.setApplication(application);
-        rest.setupRestServiceFactory();
+        rest.path("/");
         rest.setRenderer(renderer);
-        final WebServiceHandler restful = rest.path("/home")
-                .filters(Arrays.asList(logger));
+        rest.setContext(context);
+        rest.setupRestServiceFactory();
+
+        final AccessLogger logger = new AccessLogger();
+        final WebServiceHandler restful = rest.filters(Arrays.asList(logger));
 
         final ResourceHttpHandler resourceHandler = new ResourceHttpHandler();
         resourceHandler.setInternal(true);
@@ -52,6 +62,8 @@ public class WelcomeServiceTest {
 
         final WebServiceHandler resource = resourceHandler.path("/")
                     .filters(Arrays.asList(logger));
+
+
         server = new EmbeddedServer.Builder()
                 .random()
                 .handlers(Arrays.asList(restful, resource))
@@ -79,7 +91,7 @@ public class WelcomeServiceTest {
                 .build();
 
         // Test GET
-        RestClient.Response response = client.doGet(new URL("http://localhost:" + port +"/home/index"));
+        RestClient.Response response = client.doGet(new URL("http://localhost:" + port +"/ui/index"));
         assertEquals(HttpURLConnection.HTTP_OK, response.getStatus());
         assertTrue(response.hasEntity());
         String body = response.getEntity();

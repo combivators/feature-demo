@@ -4,7 +4,6 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -81,7 +80,7 @@ public class H2Engine implements Closeable {
             LOGGER.info("[H2] Database engine started. - " + getURL());
 
             if (builder.changed != null) {
-            	Connection conn = createConnection();
+                Connection conn = createConnection();
                 DaoHelper.executeScript(conn, Arrays.asList(String.format("alter user sa set password '%s'", builder.changed)));
                 conn.close();
                 builder.password = builder.changed;
@@ -90,16 +89,16 @@ public class H2Engine implements Closeable {
             if (builder.script != null) {
                 List<String> scripts = Files.readAllLines(Paths.get(builder.script) , StandardCharsets.UTF_8);
                 if (builder.batch)
-                	DaoHelper.batchScript(conn, scripts);
+                    DaoHelper.batchScript(conn, scripts);
                 else
-                	DaoHelper.executeScript(conn, scripts);
+                    DaoHelper.executeScript(conn, scripts);
             }
             if (builder.producer != null) {
-            	EntityManager em = builder.producer.create();
-            	builder.producer.dispose(em);
+                EntityManager em = builder.producer.create();
+                builder.producer.dispose(em);
             }
             if (builder.load != null) {
-            	DaoHelper.load(conn, builder.load);
+                DaoHelper.load(conn, builder.load);
             }
             conn.close();
         } catch (IOException | SQLException ex) {
@@ -178,8 +177,8 @@ public class H2Engine implements Closeable {
     }
 
     Connection createConnection() throws SQLException {
-    	String url = getURL();
-    	return DriverManager.getConnection(url, builder.user, builder.password);
+        String url = getURL();
+        return DriverManager.getConnection(url, builder.user, builder.password);
     }
 
     public static class Builder {
@@ -210,16 +209,19 @@ public class H2Engine implements Closeable {
             name = n;
             return this;
         }
-        public Builder base(Path p) {
-            base = p.toFile().getAbsolutePath();
+        public Builder base(String p) {
+            if (!Files.exists(Paths.get(p))) {
+                throw new IllegalArgumentException("Not found H2 base path : " + p);
+            }
+            base = p;
             return this;
         }
         public Builder user(String u) {
-        	user = u;
+            user = u;
             return this;
         }
         public Builder password(String p) {
-        	password = p;
+            password = p;
             return this;
         }
         public Builder script(String p) {
@@ -249,15 +251,15 @@ public class H2Engine implements Closeable {
             return this;
         }
         public Builder batch(boolean enable) {
-        	batch = enable;
+            batch = enable;
             return this;
         }
         public Builder jpa(EntityManagerProducer p) {
-        	producer = p;
+            producer = p;
             return this;
         }
         public Builder changed(String p) {
-        	changed = p;
+            changed = p;
             return this;
         }
         @Override

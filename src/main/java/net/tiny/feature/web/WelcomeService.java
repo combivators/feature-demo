@@ -11,21 +11,21 @@ import javax.ws.rs.core.MediaType;
 import net.tiny.service.ServiceContext;
 import net.tiny.ws.mvc.ModelAndView;
 // https://bootsnipp.com/snippets/352pm
-@Path("/home")
+@Path("/")
 public class WelcomeService {
 
     @Resource
     private ServiceContext serviceContext;
 
     @GET
-    @Path("index")
+    @Path("ui/index")
     @Produces(value = MediaType.TEXT_HTML)
-    public ModelAndView home() {
+    public ModelAndView index() {
         return home("en");
     }
 
     @GET
-    @Path("index/{lang}")
+    @Path("ui/home/{lang}")
     @Produces(value = MediaType.TEXT_HTML)
     public ModelAndView home(@DefaultValue("en") @PathParam("lang")String lang) {
         ModelAndView mv = new ModelAndView("welcome/index.html");
@@ -40,7 +40,10 @@ public class WelcomeService {
         //我们是一群来自遥远东方大陆的拓荒者:We are a group of frontiersman.
         prop.setProperty("who", "我们是一群来自远方的拓荒者");
         */
-        PropertiesEditor editor = serviceContext.lookup("res.editor", PropertiesEditor.class);
+        if (serviceContext == null) {
+            System.out.println(hashCode() + " ##### serviceContext is null");
+        }
+        PropertiesEditor editor = serviceContext.lookup(PropertiesEditor.class);
         mv.addParams(editor.resources(lang));
         return mv;
     }

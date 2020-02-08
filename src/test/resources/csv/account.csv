@@ -1,0 +1,2 @@
+id,name,password,username,token_id,is_enabled,is_locked,locked_date,login_date,login_failure_count,login_ip,create_date,modify_date
+1,"hoge","21232f297a57a5a743894a0e4a801fc3","Hoge",,"true","false",,,0,,"2019-01-01 23:59:59","2019-01-01 23:59:59"

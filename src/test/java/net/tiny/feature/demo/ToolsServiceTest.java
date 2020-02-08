@@ -18,6 +18,7 @@ import net.tiny.ws.WebServiceHandler;
 import net.tiny.ws.mvc.HtmlRenderer;
 import net.tiny.ws.mvc.ViewRenderer;
 import net.tiny.ws.rs.RestApplication;
+import net.tiny.ws.rs.RestServiceLocator;
 import net.tiny.ws.rs.RestfulHttpHandler;
 import net.tiny.ws.rs.client.RestClient;
 
@@ -33,15 +34,20 @@ public class ToolsServiceTest {
         final AccessLogger logger = new AccessLogger();
         final RestApplication application = new RestApplication();
         application.setPattern("net.tiny.message.*, net.tiny.feature.*, !com.sun.*, !org.junit.*,");
+        application.setScan(".*/classes/, .*/test-classes/, .*/feature-.*[.]jar, .*/tiny-.*[.]jar, !.*/tiny-dic.*[.]jar");
+        RestServiceLocator context = new RestServiceLocator();
+        context.bind("application", application, true);
 
         final ViewRenderer renderer = new HtmlRenderer();
 
         final RestfulHttpHandler rest = new RestfulHttpHandler();
-        rest.setApplication(application);
-        rest.setupRestServiceFactory();
+        rest.path("/");
         rest.setRenderer(renderer);
-        final WebServiceHandler restful = rest.path("/home")
-                .filters(Arrays.asList(logger));
+        rest.setContext(context);
+        rest.setupRestServiceFactory();
+
+        final WebServiceHandler restful = rest.filters(Arrays.asList(logger));
+
 
         final ResourceHttpHandler resourceHandler = new ResourceHttpHandler();
         resourceHandler.setInternal(true);
@@ -76,7 +82,7 @@ public class ToolsServiceTest {
                 .build();
 
         // Test GET
-        RestClient.Response response = client.doGet(new URL("http://localhost:" + port +"/home/tools/index"));
+        RestClient.Response response = client.doGet(new URL("http://localhost:" + port +"/ui/tools"));
         assertEquals(HttpURLConnection.HTTP_OK, response.getStatus());
         assertTrue(response.hasEntity());
         String body = response.getEntity();

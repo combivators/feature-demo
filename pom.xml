@@ -248,6 +248,11 @@
     </dependency>
     <dependency>
       <groupId>net.tiny</groupId>
+      <artifactId>tiny-enterprise</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>net.tiny</groupId>
       <artifactId>tiny-resume</artifactId>
       <version>1.0.0</version>
     </dependency>
@@ -336,8 +341,15 @@
         <resource>
             <directory>src/main/resources</directory>
             <includes>
-                <include>**/*</include>
+                <include>application*.*</include>
+                <include>persistence*.*</include>
+                <include>config/**/*</include>
+                <include>i18n/**/*</include>
+                <include>webapp/**/*</include>
             </includes>
+            <excludes>
+                <exclude>home/**/*</exclude>
+            </excludes>
         </resource>
     </resources>
     <!-- Plugins Management -->

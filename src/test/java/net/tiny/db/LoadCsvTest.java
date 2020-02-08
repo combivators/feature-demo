@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Test;
 import net.tiny.dao.CSVLoader;
 import net.tiny.unit.db.Database;
 
-@Database(persistence="persistence-eclipselink.properties"
+@Database(persistence="persistence-test.properties"
 ,trace=true
-,before= {"create sequence xx_log_sequence increment by 1 start with 1;"
-       ,"create sequence id_seq increment by 1 start with 0 NOCYCLE;"
-}
+,createScript= "src/test/resources/sql/create_sequence.sql"
 )public class LoadCsvTest {
 
     @Resource
@@ -25,7 +23,7 @@ import net.tiny.unit.db.Database;
     @Test
     public void testTableOrdering() throws Exception {
         Connection conn = ds.getConnection();
-    	CSVLoader.tableOrdering(conn, "src/test/resources/csv");
+        CSVLoader.tableOrdering(conn, "src/test/resources/csv");
         conn.commit();
         conn.close();
     }

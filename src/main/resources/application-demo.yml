@@ -1,12 +1,15 @@
 logging:
   handler:
-    output: none
+    output: file
+    pattern: '/opt/demo/log/demo.log'
+    limit: 5242880
+    count: 3
   level:
     javax.xml.bind: WARNING
     com.sun:     WARNING
-    sun.net:     WARNING
+    sun.net:     WARN
     org.apache:  OFF
-    net.tiny:    FINE
+    net.tiny:    DEBUG
 
 #
 main: ${launcher.ws}, ${launcher.db}
@@ -35,33 +38,35 @@ launcher:
 #        clientAuth: false
   db:
     class: net.tiny.db.Launcher
-    builder: 
-#      port: 9001
-#      base: /h2
-#      name: h2
-      changed: sa
-      create:  true
-      allow:   true
-      batch:   true
-      clear:   true
-      script:  ./src/test/resources/sql/create_sequence.sql
-      load:    ./src/test/resources/csv
-      producer: ${jpa.producer}
+    builder:
+      port: 9092
+      base: /opt/demo/data
+      name: h2
+      user:     sa
+      password: sa
+      create:   false
+      allow:    true
+      batch:    true
+      clear:    false
+#      script:  /opt/demo/sql/create_sequence.sql
+#      load:    /opt/demo/csv
+#      producer: ${jpa.producer}
 
 handler:
   resource:
     class:     net.tiny.ws.ResourceHttpHandler
-#    cacheSize: 100
-    maxAge:    0
-    internal:  true
+    cacheSize: 100
+#    maxAge:    0
+    internal:  false
     path:      /
-    paths:     /:home
+    paths:     /:/opt/demo/home/
     filters:   ${filter.logger}, ${filter.cors}
 #
   sys:
     class:   net.tiny.ws.ControllableHandler
     path:    /sys
     auth:    ${auth.simple}
+#    auth:    ${auth.server}
     filters: ${filter.logger}
     context: ${service.context}
 #
@@ -110,12 +115,20 @@ auth:
     username: paas
 # 'password'
     password: Piz5wX49L4MS4SYsGwEMNw==
+  server:
+     class:   net.tiny.ws.auth.ServerAuthenticator
+     service: ${service.account}
+#
+service:
+  account:
+    class: net.tiny.ws.auth.AccountService
+    path:  /opt/demo/jaas/passwd
 #
 rest:
   application:
     class:   net.tiny.ws.rs.RestApplication
     pattern: net.tiny.message.*, net.tiny.feature.*
-    scan:    .*/classes/, .*/feature-.*[.]jar, .*/tiny-.*[.]jar, !.*/tiny-dic.*[.]jar
+    scan:    .*/tiny-.*[.]jar, .*/feature-.*[.]jar, !.*/feature-entity.*[.]jar, !.*/tiny-dic.*[.]jar
     loggingLevel: info
   monitor:
     class: net.tiny.ws.rs.RestServiceLocator$RestServiceMonitor
@@ -163,5 +176,5 @@ image:
   fas:
     class:     net.tiny.feature.demo.BrandImage
     cacheSize: 100
-#    maxAge: 86400   
+#    maxAge: 86400
 #    path: /home/fontawesome-free-5.11.2-web

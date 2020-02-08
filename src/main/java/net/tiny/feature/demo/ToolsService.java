@@ -13,7 +13,7 @@ import net.tiny.ws.mvc.ModelAndView;
 public class ToolsService {
 
     @GET
-    @Path("ui/tool")
+    @Path("ui/tools")
     @Produces(value = MediaType.TEXT_HTML)
     public ModelAndView home() {
         ModelAndView mv = new ModelAndView("tools/index.html");

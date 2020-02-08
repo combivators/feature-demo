@@ -1,0 +1,21 @@
+mvn install -Dmaven.test.skip=true
+mvn exec:java -Dexec.mainClass="net.tiny.boot.Main" -Dexec.args="-v -p local" -Dexec.classpathScope=runtime
+curl -u paas:password http://localhost:8080/sys/stop
+curl -X POST -v -H 'Content-Type:application/json' -d '{"alg":"RS256"}' http://localhost:8080/api/v1/auth/key
+curl -v http://localhost:8080/api/v1/auth/key
+curl -X PUT -v http://localhost:8080/api/v1/admin/1/token
+{"token":"1G9FGhFbm2NgM9I8OBghQfoiCqSNapSQ3USpPBbZnnAwljTgz85EJrngs3J1C4dXlt7"}
+
+curl -v http://localhost:8080/api/v1/auth/token/1G9FGhFbm2NgM9I8OBghQfoiCqSNapSQ3USpPBbZnnAwljTgz85EJrngs3J1C4dXlt7
+{"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ2IjoxLCJpYXQiOjE1ODA4MTkwMjYsImQiOnsic2l0ZSI6IlBsYXRmb3JtIiwidXNlciI6ImFkbWluIn0sImV4cCI6MTU4MDgxOTAyOSwibmJmIjoxNTgwODE5MDI2LCJqdGkiOiIzNTllZTBiNS05MmMyLTQwM2EtODM1MS0xOTM2NTE3M2QxZTEiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvIiwiYXVkIjoiYWRtaW4iLCJzdWIiOiJvYXV0aCJ9.goHwdaogi8pr3ztDgx113IZP7-R8-otH_00u2GRGHWnRhGJ6B76QJCugvyf75yqS8sOqQq6BjrTN_j9eJRy-279fUkSSz7dPn0gbyWKEb06eZ59FobfGMwcdAhH77xkaL_ac9cWAaHUA-6hobNGHXccL5YvZTcmt-pFkc-GVZQCB0sQ-BRwB3kE-33cw2kAcDT1Uys43jcJZpxKG_p4Cy-8dRLbEdnrGLJJufdzNY-PsgsldeUY5WqRKeUwQDDijFvci_tWK1-DS_GkjjrhWPMFKGamed8_tX0uiXR8v_cvVOZfinDludSUdDD3AbmkReF_kN5YmXR3HF5BKhJkB5Q"}
+
+curl -X POST -v -H 'Content-Type:application/json' -d '{"name":"fuga","password":"pass","mail":"fuga@company"}' http://localhost:8080/api/v1/account
+
+curl -v http://localhost:8080/api/v1/account/activation/8082/2L4cpozsVFVshTMin
+
+curl -X POST -v -H 'Content-Type:application/json' -d '{"name":"system","password":"system","mail":"system@company"}' http://localhost:8080/api/v1/admin
+
+curl -X PUT -v http://localhost:8080/api/v1/account/1/token
+
+
+curl -v http://localhost:8080/api/v1/auth/token/2PPidpeF30PazbuV8OKFyU1S5AkGkdsx1SInAgVdrhMDDYjbhb11wF6NKgvt
