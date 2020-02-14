@@ -1,4 +1,4 @@
-package net.tiny.feature.demo.auth;
+package net.tiny.feature.api;
 
 import java.net.HttpURLConnection;
 import java.time.LocalDateTime;
@@ -52,7 +52,7 @@ public class AuthService {
     @Path("api/v1/auth/key")
     @Produces(value = MediaType.APPLICATION_JSON)
     public Response publicKey() {
-        final SettingService service = new SettingService(serviceContext);
+        final SettingService service = serviceContext.lookup(SettingService.class);
         Setting setting = service.get();
         String key = new String(setting.getPublicKey());
         String etag = service.createEntityTag(setting);
@@ -62,6 +62,29 @@ public class AuthService {
                 .cache(maxAge)
                 .build();
     }
+
+    /**
+     * Admin API
+     * 更新生成令牌的密钥对
+     */
+    @POST
+    @Path("api/v1/auth/keys")
+    //@RolesAllowed(value = "admin:secret")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public Response keys(@BeanParam Map<?,?> param) {
+        final SettingService service = serviceContext.lookup(SettingService.class);
+        try {
+            String key = service.setTokenKey(String.valueOf(param.get("alg")));
+            return Response.ok()
+                     .entity(String.format("{\"key\":\"%s\"}", key))
+                     .build();
+        } catch (RuntimeException e) {
+            throw new ApplicationException(HttpURLConnection.HTTP_BAD_REQUEST);
+        }
+
+    }
+
 
     /**
      * Open API
@@ -90,124 +113,6 @@ public class AuthService {
                 .entity(String.format(TOKEN_FORMAT, jwt.get().token()))
                 .cache(-1L)
                 .build();
-    }
-
-    /**
-     * Admin API
-     * 更新生成令牌的密钥对
-     */
-    @POST
-    @Path("api/v1/auth/key")
-    //@RolesAllowed(value = "admin:secret")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces(value = MediaType.APPLICATION_JSON)
-    public Response keys(@BeanParam Map<?,?> param) {
-        final SettingService service = new SettingService(serviceContext);
-        try {
-            String key = service.setTokenKey(String.valueOf(param.get("alg")));
-            return Response.ok()
-                     .entity(String.format("{\"key\":\"%s\"}", key))
-                     .build();
-        } catch (RuntimeException e) {
-            throw new ApplicationException(HttpURLConnection.HTTP_BAD_REQUEST);
-        }
-
-    }
-
-    /**
-     * Admin API
-     * 更新管理账号令牌
-     */
-    @PUT
-    @Path("api/v1/admin/{id}/token")
-    //@RolesAllowed(value = "admin:secret")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces(value = MediaType.APPLICATION_JSON)
-    public Response adminToken(@PathParam("id")Long id) {
-        AdminService service = new AdminService(serviceContext);
-        Optional<String> token = service.updateToken(id);
-        if (!token.isPresent()) {
-            return Response.status(HttpURLConnection.HTTP_BAD_REQUEST).build(); // 400 : Bad request
-        }
-        return Response.ok()
-                .entity(String.format("{\"token\":\"%s\"}", token.get()))
-                .cache(-1L)
-                .build();
-    }
-
-    /**
-     * Member API
-     * 更新管理账号令牌
-     */
-    @PUT
-    @Path("api/v1/auth/account/{id}/token")
-    //@RolesAllowed(value = "admin:secret")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces(value = MediaType.APPLICATION_JSON)
-    public Response accountToken(@PathParam("id")Long id) {
-        AccountService service = new AccountService(serviceContext);
-        Optional<String> token = service.updateToken(id);
-        if (!token.isPresent()) {
-            return Response.status(HttpURLConnection.HTTP_BAD_REQUEST).build(); // 400 : Bad request
-        }
-        return Response.ok()
-                .entity(String.format("{\"token\":\"%s\"}", token.get()))
-                .cache(-1L)
-                .build();
-    }
-
-    // Admin API
-    @PUT
-    @Path("api/v1/setting")
-    //@RolesAllowed(value = "admin:secret")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces(value = MediaType.APPLICATION_JSON)
-    public Response setting(@BeanParam Setting setting) {
-        /*
-        if (!isValid(admin, Save.class)) {
-            return new Model(null).status(HttpURLConnection.HTTP_BAD_REQUEST); // 400 : Bad request
-        }
-        */
-        final SettingService service = new SettingService(serviceContext);
-        Setting source = service.get();
-        source.setPublicKey(setting.getPublicKey());
-        source.setUpdater("admin");
-        source.setUpdated("publicKey"); //TODO
-        source.setModified(LocalDateTime.now());
-        service.put(source);
-        return Response.ok().build();
-    }
-
-    /**
-     * Admin API
-     * 创建管理员账号
-     */
-    @POST
-    @Path("api/v1/admin")
-    //@RolesAllowed(value = "admin:secret")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces(value = MediaType.APPLICATION_JSON)
-    public Response admin(@BeanParam Map<Object, Object> param, @Context String client) {
-        AdminService service = new AdminService(serviceContext);
-        String username = (String)param.get("name");
-        String mail = (String)param.get("mail");
-        String password = (String)param.get("password");
-        if (null == username || null == password || null == mail) {
-            return Response.status(HttpURLConnection.HTTP_BAD_REQUEST).build(); // 400 : Bad request
-        }
-        Optional<Admin> entity = service.create(username, password, mail, client.toString());
-        if (!entity.isPresent()) {
-            return Response.status(HttpURLConnection.HTTP_CONFLICT).build(); // 409 : Conflict
-        }
-        Admin admin = entity.get();
-        Optional<String> adminToken  = service.updateToken(admin.getId());
-        final String json = String.format(ADMIN_FORMAT,
-                admin.getId(),
-                admin.getUsername(),
-                adminToken.get());
-        return Response.status(HttpURLConnection.HTTP_CREATED)
-                .entity(json)
-                .build(); // 201 : Created
     }
 
     /**
@@ -260,7 +165,7 @@ public class AuthService {
      * 激活用户账号
      */
     @GET
-    @Path("api/v1/account/activation/{code}/{token}")
+    @Path("api/v1/activation/{code}/{token}")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces(value = MediaType.APPLICATION_JSON)
     public Response activation(@PathParam("code")String code, @PathParam("token")String token) {
@@ -276,7 +181,7 @@ public class AuthService {
                     }
                 });
         if (!entity.isPresent()) {
-            LOGGER.warning(String.format("[API] Auth POST '/api/v1/account/activation/' cause : %s", notice.toString()));
+            LOGGER.warning(String.format("[API] Auth POST '/api/v1/activation/' cause : %s", notice.toString()));
             return Response.status(HttpURLConnection.HTTP_NOT_FOUND).build(); // 404 : Not found
         }
         Account account = entity.get();
@@ -289,4 +194,102 @@ public class AuthService {
                 .entity(json)
                 .build(); // 201 : Created
     }
+
+    /**
+     * Member API
+     * 更新管理账号令牌
+     */
+    @PUT
+    @Path("api/v1/auth/account/{id}/token")
+    //@RolesAllowed(value = "admin:secret")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public Response accountToken(@PathParam("id")Long id) {
+        AccountService service = new AccountService(serviceContext);
+        Optional<String> token = service.updateToken(id);
+        if (!token.isPresent()) {
+            return Response.status(HttpURLConnection.HTTP_BAD_REQUEST).build(); // 400 : Bad request
+        }
+        return Response.ok()
+                .entity(String.format("{\"token\":\"%s\"}", token.get()))
+                .cache(-1L)
+                .build();
+    }
+
+    /**
+     * Admin API
+     * 更新管理账号令牌
+     */
+    @PUT
+    @Path("api/v1/admin/{id}/token")
+    //@RolesAllowed(value = "admin:secret")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public Response adminToken(@PathParam("id")Long id) {
+        AdminService service = new AdminService(serviceContext);
+        Optional<String> token = service.updateToken(id);
+        if (!token.isPresent()) {
+            return Response.status(HttpURLConnection.HTTP_BAD_REQUEST).build(); // 400 : Bad request
+        }
+        return Response.ok()
+                .entity(String.format("{\"token\":\"%s\"}", token.get()))
+                .cache(-1L)
+                .build();
+    }
+
+    // Admin API
+    @PUT
+    @Path("api/v1/setting")
+    //@RolesAllowed(value = "admin:secret")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public Response setting(@BeanParam Setting setting) {
+        /*
+        if (!isValid(admin, Save.class)) {
+            return new Model(null).status(HttpURLConnection.HTTP_BAD_REQUEST); // 400 : Bad request
+        }
+        */
+        final SettingService service = serviceContext.lookup(SettingService.class);
+        Setting source = service.get();
+        source.setPublicKey(setting.getPublicKey());
+        source.setUpdater("admin");
+        source.setUpdated("publicKey"); //TODO
+        source.setModified(LocalDateTime.now());
+        service.put(source);
+        return Response.ok().build();
+    }
+
+    /**
+     * Admin API
+     * 创建管理员账号
+     */
+    @POST
+    @Path("api/v1/admin")
+    //@RolesAllowed(value = "admin:secret")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public Response admin(@BeanParam Map<Object, Object> param, @Context String client) {
+        AdminService service = new AdminService(serviceContext);
+        String username = (String)param.get("name");
+        String mail = (String)param.get("mail");
+        String password = (String)param.get("password");
+        if (null == username || null == password || null == mail) {
+            return Response.status(HttpURLConnection.HTTP_BAD_REQUEST).build(); // 400 : Bad request
+        }
+        Optional<Admin> entity = service.create(username, password, mail, client.toString());
+        if (!entity.isPresent()) {
+            return Response.status(HttpURLConnection.HTTP_CONFLICT).build(); // 409 : Conflict
+        }
+        Admin admin = entity.get();
+        Optional<String> adminToken  = service.updateToken(admin.getId());
+        final String json = String.format(ADMIN_FORMAT,
+                admin.getId(),
+                admin.getUsername(),
+                adminToken.get());
+        return Response.status(HttpURLConnection.HTTP_CREATED)
+                .entity(json)
+                .build(); // 201 : Created
+    }
+
+
 }

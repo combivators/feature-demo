@@ -4,48 +4,38 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
-import net.tiny.dao.BaseService;
+import javax.annotation.Resource;
+
 import net.tiny.el.ELParser;
 import net.tiny.feature.entity.Setting;
 import net.tiny.service.ServiceContext;
 import net.tiny.service.communication.MailProvider;
 import net.tiny.ws.mvc.TemplateParser;
 
-public class MailService extends SettingService {
+public class MailService {
 
-    private ExecutorService executor;
+    @Resource
+    private ServiceContext context;
     private MailProvider.Builder builder;
-    private TemplateParser templateParser;
 
-    public MailService(ServiceContext context) {
-        super(context);
-        Setting setting = super.get();
-        executor = context.lookup(ExecutorService.class);
-        templateParser = context.lookup(TemplateParser.class);
-        builder = mailProviderBuilder(setting);
-    }
-
-    public MailService(BaseService<?> base) {
-        super(base);
-        Setting setting = super.get();
-        executor = base.service(ExecutorService.class);
-        templateParser = base.service(TemplateParser.class);
-        builder = mailProviderBuilder(setting);
-    }
-
-    private MailProvider.Builder mailProviderBuilder(Setting setting) {
-        return new MailProvider.Builder()
-                .smtp(setting.getSmtpHost(), setting.getSmtpPort(), setting.getSmtpUser(), setting.getSmtpPassword())
-                .mail(setting.getEmail())
-                .type(setting.getMailType())
-                .executor(executor);
+    private MailProvider.Builder getBuilder() {
+        if (builder == null) {
+            Setting setting = context.lookup(SettingService.class).get();
+            ExecutorService executor = context.lookup(ExecutorService.class);
+            builder = new MailProvider.Builder()
+                    .smtp(setting.getSmtpHost(), setting.getSmtpPort(), setting.getSmtpUser(), setting.getSmtpPassword())
+                    .mail(setting.getEmail())
+                    .type(setting.getMailType())
+                    .executor(executor);
+        }
+        return builder;
     }
 
     /**
      * 发送邮件
      */
     public void send(String to, String subject, String content) {
-        MailProvider.Mail mail = builder.build()
+        MailProvider.Mail mail = getBuilder().build()
                 .to(to)
                 .subject(subject)
                 .content(content);
@@ -57,6 +47,7 @@ public class MailService extends SettingService {
      */
     public void send(String to, String subject, String template, Map<String, Object> param) {
         try {
+            TemplateParser templateParser = context.lookup(TemplateParser.class);
             String content = templateParser.parse(template, param);
             send(to, subject, content);
         } catch (IOException e) {

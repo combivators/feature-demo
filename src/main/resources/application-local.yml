@@ -1,13 +1,19 @@
 logging:
   handler:
     output: none
+    level: FINE
   level:
-    javax.xml.bind: WARNING
-    com.sun:     WARNING
-    sun.net:     WARNING
-    org.apache:  OFF
-    net.tiny:    FINE
-
+    all: ALL
+    java:          WARNING
+    javax.xml:     WARNING
+    com.sun:       WARNING
+    sun.net:       WARNING
+    sun.util:      WARNING
+    org.apache:    OFF
+    org.jboss:     WARNING
+    org.hibernate: WARNING
+    org.eclipse:   WARNING
+    net.tiny:      INFO
 #
 main: ${launcher.ws}, ${launcher.db}
 #shutdown = ${hook}
@@ -16,8 +22,8 @@ executor: ${pool}
 callback: ${service.context}
 pool:
   class:   net.tiny.service.PausableThreadPoolExecutor
-  size:    5
-  max:     10
+  size:    10
+  max:     20
   timeout: 3
 launcher:
   ws:
@@ -28,7 +34,7 @@ launcher:
       backlog: 10
       stopTimeout: 1
       executor: ${pool}
-      handlers: ${handler.resource}, ${handler.sys}, ${handler.rest}, ${handler.api}, ${handler.ui}
+      handlers: ${handler.resource}, ${handler.sys}, ${handler.rest}, ${handler.api}, ${handler.ui}, ${handler.dao}
 #      ssl:
 #        file:       ks
 #        password:   12345
@@ -50,41 +56,49 @@ launcher:
 
 handler:
   resource:
-    class:     net.tiny.ws.ResourceHttpHandler
+    class:    net.tiny.ws.ResourceHttpHandler
 #    cacheSize: 100
-    maxAge:    0
-    internal:  true
-    path:      /
-    paths:     /:home
-    filters:   ${filter.logger}, ${filter.cors}
+    maxAge:   0
+    internal: false
+    path:     /
+    paths:    /:src/main/resources/home
+    filters:  ${filter.logger}, ${filter.cors}
 #
   sys:
     class:   net.tiny.ws.ControllableHandler
     path:    /sys
     auth:    ${auth.simple}
     filters: ${filter.logger}
-    context: ${service.context}
+#
+  dao:
+    class:   net.tiny.dao.EntityService
+    path:    /v1/dao/account
+    auth:    ${auth.simple}
+    filters: ${filter.jpa}, ${filter.logger}
+    entity:  net.tiny.feature.entity.Account
+#
+  uploader:
+    class:   net.tiny.feature.ui.ResumesUploadHandler
+    path:    /upload/v1/resume/
+    filters: ${filter.logger}
 #
   rest:
     class:     net.tiny.ws.rs.RestfulHttpHandler
     path:      /home
     filters:   ${filter.logger}
-    context:   ${service.context}
     renderer : ${renderer.html}
-    listener:  ${rest.monitor}
+#    listener:  ${service.monitor}
   api:
     class:     net.tiny.ws.rs.RestfulHttpHandler
     path:      /api
-    filters:   ${filter.jpa}, ${filter.jwt}, ${filter.logger}
-    context:   ${service.context}
-    listener:  ${rest.monitor}
+    filters:   ${filter.jpa}, ${filter.auth}, ${filter.logger}
+#    listener:  ${service.monitor}
   ui:
     class:     net.tiny.ws.rs.RestfulHttpHandler
     path:      /ui
     filters:   ${filter.logger}, ${filter.jpa}
-    context:   ${service.context}
     renderer : ${renderer.html}
-    listener:  ${rest.monitor}
+#    listener:  ${service.monitor}
 #
 filter:
    logger:
@@ -97,9 +111,23 @@ filter:
    jpa:
      class: net.tiny.dao.HttpTransactionFilter
      producer: ${jpa.producer}
-   jwt:
-     class: net.tiny.feature.demo.auth.JsonWebTokenFilter
-     pattern: /api/v1/setting/.*, !/api/v1/auth/.*
+   auth:
+     class:  net.tiny.ws.auth.JsonWebTokenFilter
+     validator: ${setting.validator}
+#     uri:    '!/api/v1/auth/key, !/api/v1/auth/token/.*, !/api/v1/activation/.*'
+#     key:    src/test/resources/setting/public.key
+#
+setting:
+  validator:
+    class: net.tiny.feature.service.ValidatorSupplier
+    setting: ${setting.service}
+
+setting:
+  service:
+    class: net.tiny.feature.service.SettingService
+mail:
+  service:
+    class: net.tiny.feature.service.MailService
 #
 auth:
 #
@@ -116,19 +144,83 @@ rest:
     class:   net.tiny.ws.rs.RestApplication
     pattern: net.tiny.message.*, net.tiny.feature.*
     scan:    .*/classes/, .*/feature-.*[.]jar, .*/tiny-.*[.]jar, !.*/tiny-dic.*[.]jar
-    loggingLevel: info
-  monitor:
-    class: net.tiny.ws.rs.RestServiceLocator$RestServiceMonitor
+    verbose: false
+
 #
 service:
   context:
     class: net.tiny.ws.rs.RestServiceLocator
+  monitor:
+    class: net.tiny.ws.rs.RestServiceLocator$RestServiceMonitor
+  feature:
+    class: net.tiny.context.RestWebServiceLocator
+# Message Bus
+message:
+  bus:
+    class:     net.tiny.message.agent.MessageBus
+    consumers: ${consumer.mail}
+    token:     tsObwsH4IfoxyDWj
+#
+consumer:
+  mail:
+    class: net.tiny.message.agent.ConsumerContext
+    channels: [mail]
+    endpoint: http://localhost:8080/api/v1/consumer/mail
+#    endpoint: net.tiny.feature.service.LocalMailSender
+#
+#    local:
+#      class: net.tiny.message.agent.ConsumerContext
+#      channels: [ch1, ch2]
+#      endpoint: net.tiny.message.test.LocalTestConsumer
 #
 jpa:
   producer:
     class: net.tiny.dao.EntityManagerProducer
-    profile: local
-    level: INFO
+    properties: ${jpa.properties}
+#    level: INFO
+# JPA2 Properties
+  properties:
+    javax:
+      persistence:
+         jdbc:
+           driver:   org.h2.Driver
+           url:      jdbc:h2:tcp://127.0.0.1:9092/h2
+           user:     sa
+           password: sa
+#           user:     ${${vcap.alias}.cf.username}
+#           password: ${${vcap.alias}.cf.password}
+           show_sql: true
+         provider: org.eclipse.persistence.jpa.PersistenceProvider
+#        sharedCache:
+#          mode: ENABLE_SELECTIVE
+#        transactionType: JTA
+         validation:
+           mode: auto
+         lock:
+           timeout: 1000
+         query:
+           timeout: 1000
+         schema-generation:
+           database:
+             action: create
+           create-source: metadata
+#Supported platforms : JavaDB Derby Oracle MySQL4 PostgreSQL SQLServer DB2 DB2Mainframe Sybase H2 HSQL
+#Others available : Informix TimesTen Attunity SQLAnyWhere DBase Cloudscape PointBase
+  eclipselink:
+    target-database: HSQL
+    logging:
+#      level: INFO
+      level:
+        sql: FINE
+      parameters: true
+    jdbc:
+      connection_pool:
+        default:
+          initial: 2
+          min:     2
+          max:     5
+    weaving:
+      changetracking: false
 
 #
 renderer:

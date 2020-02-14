@@ -644,7 +644,7 @@
               </goals>
             </execution>
           </executions>
-          <!-- mvn exec:java -Dexec.mainClass="net.tiny.boot.Main" -Dexec.args="-v -p local" -Dexec.classpathScope=runtime
+          <!-- mvn exec:java -Dexec.mainClass="net.tiny.boot.Main" -Dexec.args="-v -p local" -Dexec.classpathScope=java
           <configuration>
             <mainClass>net.tiny.boot.Main</mainClass>
             <arguments>
@@ -652,6 +652,7 @@
               <argument>-p</argument>
               <argument>local</argument>
             </arguments>
+            <classpathScope>test</classpathScope>
           </configuration>
           -->
         </plugin>

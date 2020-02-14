@@ -9,6 +9,7 @@ public class BrandImageServiceTest {
     @Test
     public void testGenerateSvgImage() throws Exception {
         BrandImage brandImage = new BrandImage();
+        brandImage.setPath("src/main/resources/home/fontawesome-free-5.11.2-web");
         String svg = new String(brandImage.generate("fa", "fa-recycle", "red", "gray"));
         System.out.println(svg);
         assertTrue(svg.contains("viewBox=\"0 0 512 512\""));

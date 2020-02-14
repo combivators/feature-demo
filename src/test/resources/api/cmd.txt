@@ -1,21 +1,41 @@
 mvn install -Dmaven.test.skip=true
 mvn exec:java -Dexec.mainClass="net.tiny.boot.Main" -Dexec.args="-v -p local" -Dexec.classpathScope=runtime
 curl -u paas:password http://localhost:8080/sys/stop
-curl -X POST -v -H 'Content-Type:application/json' -d '{"alg":"RS256"}' http://localhost:8080/api/v1/auth/key
+curl -X POST -v -H 'Content-Type:application/json' -d '{"alg":"RS256"}' http://localhost:8080/api/v1/auth/keys
 curl -v http://localhost:8080/api/v1/auth/key
 curl -X PUT -v http://localhost:8080/api/v1/admin/1/token
 {"token":"1G9FGhFbm2NgM9I8OBghQfoiCqSNapSQ3USpPBbZnnAwljTgz85EJrngs3J1C4dXlt7"}
 
+curl -v http://localhost:8080/api/v1/auth/token/DrfChpqxB0ZPPs8uUw52iD74MCi4wu
+{"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ2IjoxLCJpYXQiOjE1ODEzMzU2MTAsImQiOnsic2l0ZSI6IlBsYXRmb3JtIiwic2NvcGUiOiJhZG1pbiIsImlkIjoxLCJ1c2VyIjoi566h55CG5ZGYIn0sImV4cCI6MTU4MTMzNTYxNCwibmJmIjoxNTgxMzM1NjEwLCJqdGkiOiI4ODRhYzY1OC03OWRlLTQ3MWUtYmI1MS00MDJkYTc4OWU2MDQiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvIiwiYXVkIjoi566h55CG5ZGYIiwic3ViIjoib2F1dGgifQ.MrVZatOOeshI_OE4Oz3l8v3hv9bM0JObqekrB6mKJwjB88ZI2TWp-MU57Hy93h8qiVGw6eQ-HZV1_GLG3dMgZ0KQBS4viI_lsk2AUv8OyHLdBOa8gxAU4Xw_mX_rHyK9g63HclAwzi5Ys1EQ4UU9q-7q1_8RmNpR5E3_AVtFgF_LRhWqIu-V18ytwaD2QKnfhnGO9RzA2e3CS3XHRGQ3lmRY_TS810DFt1quaDoy9yUBbYo_eWg8XecbObogjxhr_lUlGNXorYfFZjeN90La1-6UtyV-MKW4D4Xo3FpNGBuGp_jk-kGbh5ihSfk33rkqV70qxgOHFXsH2wPXmut_pA"}
+
 curl -v http://localhost:8080/api/v1/auth/token/1G9FGhFbm2NgM9I8OBghQfoiCqSNapSQ3USpPBbZnnAwljTgz85EJrngs3J1C4dXlt7
 {"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ2IjoxLCJpYXQiOjE1ODA4MTkwMjYsImQiOnsic2l0ZSI6IlBsYXRmb3JtIiwidXNlciI6ImFkbWluIn0sImV4cCI6MTU4MDgxOTAyOSwibmJmIjoxNTgwODE5MDI2LCJqdGkiOiIzNTllZTBiNS05MmMyLTQwM2EtODM1MS0xOTM2NTE3M2QxZTEiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvIiwiYXVkIjoiYWRtaW4iLCJzdWIiOiJvYXV0aCJ9.goHwdaogi8pr3ztDgx113IZP7-R8-otH_00u2GRGHWnRhGJ6B76QJCugvyf75yqS8sOqQq6BjrTN_j9eJRy-279fUkSSz7dPn0gbyWKEb06eZ59FobfGMwcdAhH77xkaL_ac9cWAaHUA-6hobNGHXccL5YvZTcmt-pFkc-GVZQCB0sQ-BRwB3kE-33cw2kAcDT1Uys43jcJZpxKG_p4Cy-8dRLbEdnrGLJJufdzNY-PsgsldeUY5WqRKeUwQDDijFvci_tWK1-DS_GkjjrhWPMFKGamed8_tX0uiXR8v_cvVOZfinDludSUdDD3AbmkReF_kN5YmXR3HF5BKhJkB5Q"}
 
-curl -X POST -v -H 'Content-Type:application/json' -d '{"name":"fuga","password":"pass","mail":"fuga@company"}' http://localhost:8080/api/v1/account
+curl -X POST -v -H 'Content-Type:application/json' -d '{"name":"fuga","password":"pass","mail":"fuga@company.com"}' http://localhost:8080/api/v1/account
 
-curl -v http://localhost:8080/api/v1/account/activation/8082/2L4cpozsVFVshTMin
+curl -v http://localhost:8080/api/v1/account/activation/6867/AuOuDaOx7tjzHW4mm4mviX
+{"id":2,"name":"fuga","token":"4aCCnuFbDcioR9pUOGWURCDATjUvVTlirLysuYrnRrl4YoT7OKyVoY5WZ3ZZBQp3"}
 
-curl -X POST -v -H 'Content-Type:application/json' -d '{"name":"system","password":"system","mail":"system@company"}' http://localhost:8080/api/v1/admin
+
+curl -X POST -v -H 'Content-Type:application/json' -d '{"name":"system","password":"system","mail":"system@company.com"}' http://localhost:8080/api/v1/admin
+{"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ2IjoxLCJpYXQiOjE1ODEzMzYwMDAsImQiOnsic2l0ZSI6IlBsYXRmb3JtIiwic2NvcGUiOiJhZG1pbiIsImlkIjozLCJ1c2VyIjoic3lzdGVtIn0sImV4cCI6MTU4MTMzNjAwNCwibmJmIjoxNTgxMzM2MDAwLCJqdGkiOiI5OWMzZTQ4NS00NGYzLTRhZDgtOTBhOS0xZTljY2FlNDUxYzIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvIiwiYXVkIjoic3lzdGVtIiwic3ViIjoib2F1dGgifQ.XidXu7h-aW3GzwCoSd8_aPPPJ4wKm-iwKncqoHGH48XS5ypmPpexABNJ9UsYOu0rAW-wEZkL4zkVrGDuH8nLyPAg22lF8UNJo-9hT88HA8QWYJtiVbWqQDdr7B25sl_qf2KJKqc1XoCLkvK0P9iW4LrAbelIvEOb03C9eBU1Chb22kb-7uZTgcAkertqg3MmNYZEXHiJ2a84ciTABOYGvovtypdxm1WaHKUAN031D1OtMY6x9qThhTNgLD-GVNpFMUAnpbPxqrQWKEFEz2PAsxYteknoxI2k0wS8tQB-tBVIBwHCx_1MrWUSxHyFYr31_rOOzYwNFI0RGcG3qsKBSg"}
 
 curl -X PUT -v http://localhost:8080/api/v1/account/1/token
 
 
-curl -v http://localhost:8080/api/v1/auth/token/2PPidpeF30PazbuV8OKFyU1S5AkGkdsx1SInAgVdrhMDDYjbhb11wF6NKgvt
+curl -v http://localhost:8080/api/v1/auth/token/2PPidpeF306dszg6jhbWJjplYF3i1mLDYnZK1u8JpkufBFAyA3VBo0upAjrJ
+
+curl -v http://localhost:8080/api/v1/bus/mail/tsObwsH4IfoxyDWj/consumers
+
+
+http://localhost:8080/upload-demo.html
+
+
+curl -X POST -v -H 'Content-Type:application/json' -d '{"channel":"mail","source":"source","message":"fuga@company.com"}'  http://localhost:8080/api/v1/msg/mail
+
+curl -X POST -v -H 'Content-Type:application/json' -d '{"channel":"mail","source":"source","message":"fuga@company.com"}'  http://localhost:8080/api/v1/consumer/mail
+
+curl -v -u paas:password http://localhost:8080/v1/dao/account/1
+
+curl -v http://localhost:8080/hello/Hoge

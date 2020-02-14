@@ -4,12 +4,19 @@ logging:
     pattern: '/opt/demo/log/demo.log'
     limit: 5242880
     count: 3
+    level: FINE
   level:
-    javax.xml.bind: WARNING
-    com.sun:     WARNING
-    sun.net:     WARN
-    org.apache:  OFF
-    net.tiny:    DEBUG
+    all: ALL
+    java:          WARNING
+    javax.xml:     WARNING
+    com.sun:       WARNING
+    sun.net:       WARNING
+    sun.util:      WARNING
+    org.apache:    OFF
+    org.jboss:     WARNING
+    org.hibernate: WARNING
+    org.eclipse:   WARNING
+    net.tiny:      FINE
 
 #
 main: ${launcher.ws}, ${launcher.db}
@@ -19,8 +26,8 @@ executor: ${pool}
 callback: ${service.context}
 pool:
   class:   net.tiny.service.PausableThreadPoolExecutor
-  size:    5
-  max:     10
+  size:    10
+  max:     20
   timeout: 3
 launcher:
   ws:
@@ -94,7 +101,7 @@ handler:
 filter:
    logger:
      class: net.tiny.ws.AccessLogger
-     out:   stdout
+     out:   /opt/demo/log/access.log
    cors:
      class: net.tiny.ws.CorsResponseFilter
    snap:

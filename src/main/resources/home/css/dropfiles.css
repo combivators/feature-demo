@@ -1,0 +1,84 @@
+*{margin: 0;}
+ul{
+ list-style-type: none;
+ margin: 0;
+ padding: 0;
+}
+a{text-decoration: none;}
+.upload-area{
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #fafbfc;
+  box-shadow: inset 5px 5px 10px rgba(27,31,35,.05);
+  border: 1px solid #ababab;
+  transition: all 0.3s linear;
+}
+.upload-area.dragover{
+  background-color: #d6eaea;
+}
+.upload-area h1{
+  font-size: 2rem;
+  user-select: none;
+  font-weight: bold;
+  color: #ababab;
+}
+.upload{
+  margin-top: 30px;
+  width: 100%;
+  text-align: center;
+  font-size: 3rem;
+  color: teal;
+}
+.upload i{
+  cursor: pointer;
+}
+.upload + input{
+  display: none;
+}
+.table-wrapper{
+  visibility: hidden;
+  opacity: 0;
+  transition: all 1s linear;
+}
+.table-wrapper.show{
+  visibility: visible;
+  opacity: 1;
+}
+.upload-file{
+  width: 90%;
+}
+/* https://www.quackit.com/css/css_color_codes.cfm */
+.color-1 {color: #28a745 !important;}
+.color-2 {color: #007bff !important;}
+.color-3 {color: #17a2b8 !important;}
+.color-4 {color: #ffc107 !important;}
+.color-5 {color: #6c757d !important;}
+.color-6 {color: #f8f9fa !important;}
+.color-7 {color: #00037a !important;}
+.color-8 {color: #000f73 !important;}
+.color-9 {color: #0007a3 !important;}
+/* https://www.w3schools.com/cssref/css_colors.asp */
+.bg-1 {background-color: #F0FFF0 !important;}/*HoneyDew    */
+.bg-2 {background-color: #F0F8FF !important;}/*AliceBlue   */
+.bg-3 {background-color: #FFFFE0 !important;}/*LightYellow */
+.bg-4 {background-color: #FFE4E1 !important;}/*MistyRose   */
+.bg-5 {background-color: #E0FFFF !important;}/*LightCyan   */
+.bg-6 {background-color: #F0FFFF !important;}/*Azure       */
+.bg-7 {background-color: #FFFFF0 !important;}/*Ivory       */
+.bg-8 {background-color: #FFB6C1 !important;}/*LightPink   */
+.bg-9 {background-color: #FFF0F5 !important;}/*LavenderBlush*/
+
+/* tr:nth-child(even) {background-color: #f2f2f2;} */
+.modal-header, h4, .close {
+  /* background-color: #5cb85c; */
+  background-color: #007bff !important;
+  color:white !important;
+  text-align: center;
+  font-size: 30px;
+}
+.modal-footer {
+  background-color: #f9f9f9;
+}

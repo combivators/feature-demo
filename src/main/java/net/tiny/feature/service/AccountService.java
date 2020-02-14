@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 
 import javax.persistence.NoResultException;
 
+import net.tiny.config.JsonParser;
+import net.tiny.context.ServiceFeature;
 import net.tiny.dao.AbstractService;
 import net.tiny.dao.BaseService;
 import net.tiny.dao.Dao;
@@ -22,6 +24,8 @@ import net.tiny.feature.entity.Group;
 import net.tiny.feature.entity.Setting;
 import net.tiny.feature.entity.Token;
 import net.tiny.feature.entity.secure.Email;
+import net.tiny.messae.api.Message;
+import net.tiny.messae.api.MessageService;
 import net.tiny.service.Callback;
 import net.tiny.service.ServiceContext;
 import net.tiny.ws.auth.Codec;
@@ -170,7 +174,7 @@ public class AccountService extends BaseService<Account> {
         Long id = account.get().getId();
         String name = account.get().getName();
         String scope = "member";
-        final Setting setting = new SettingService(this).get();
+        final Setting setting = service(SettingService.class).get();
         // Create a JWT
         Map<String, Object> payload = new HashMap<String, Object>();
         payload.put("id", id);
@@ -268,7 +272,8 @@ public class AccountService extends BaseService<Account> {
                 return Optional.empty();
             }
         }
-        //TODO 邮箱变动
+
+        //TODO 邮箱变动Case
         Email email = new Email();
         email.setAddress(mail);
         //随机生成4位验证号码
@@ -277,15 +282,31 @@ public class AccountService extends BaseService<Account> {
         account.setEmail(email);
         service.post(email);
 
-        final Setting setting = new SettingService(this).get();
-        String notice = String.format("%sapi/v1/account/activation/%s/%s",
+        final Setting setting = service(SettingService.class).get();
+
+        String notice = String.format("%sapi/v1/activation/%s/%s",
                 setting.getSiteUrl(),
                 code,
                 Codec.encodeString(mail.getBytes()));
         String msg = String.format("非同期发送确认邮件 To:%s 验证号码:[%s] 回调URL:%s", mail, code, notice);
         LOGGER.info(msg);
+
         //TODO 非同期激活邮件送信
-        //new MailService(this).send(mail, "Activation", msg);
+        ServiceFeature locator = service(ServiceFeature.class);
+        String endpoint = "http://localhost:8080/api/v1/msg"; //TODO
+        MessageService bus = locator.lookup(endpoint, MessageService.class);
+        Message message = new Message();
+        message.setChannel("mail");
+        Map<String, Object> map = new HashMap<>();
+        map.put("to", mail);
+        map.put("subject", "Activation");
+        map.put("template", "activation_mail");
+        map.put("content", msg);
+        String encoded = Codec.encodeString(JsonParser.marshal(map).getBytes());
+        message.setMessage(encoded);
+        bus.push(message.getChannel(), message);
+
+        //service(MailService.class).send(mail, "Activation", msg);
 
         if(null != callback) {
             callback.accept(Callback.succeed(msg));

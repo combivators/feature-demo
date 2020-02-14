@@ -8,9 +8,10 @@ import java.time.temporal.ChronoField;
 import java.util.UUID;
 import java.util.function.Supplier;
 
+import javax.annotation.Resource;
+//import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 
-import net.tiny.dao.BaseService;
 import net.tiny.dao.Dao;
 import net.tiny.dao.EntityManagerProducer;
 import net.tiny.dao.IDao;
@@ -22,27 +23,24 @@ import net.tiny.ws.auth.Keys;
 public class SettingService implements Supplier<Setting> {
 
     private static final String DEFAULT_ID = "default";
+    @Resource
+    private ServiceContext context;
 
-    private final IDao<Setting, String> dao;
-
-    public SettingService(ServiceContext context) {
-        this(context.lookup(EntityManagerProducer.class).getScoped(false));
+    public void setContext(ServiceContext c) {
+        this.context = c;
     }
 
-    public SettingService(BaseService<?> base) {
-        this(base.getContext());
+    protected IDao<Setting, String> dao() {
+        final EntityManager em = context.lookup(EntityManagerProducer.class).getScoped(false);
+        return Dao.getDao(em, String.class, Setting.class);
     }
-
-    public SettingService(EntityManager em) {
-        dao = Dao.getDao(em, String.class, Setting.class);
-    }
-
     @Override
     public Setting get() {
-        return dao.find(DEFAULT_ID).get();
+        return dao().find(DEFAULT_ID).get();
     }
 
     public void put(Setting entity) {
+        IDao<Setting, String> dao = dao();
         dao.update(entity);
         dao.flush();
     }

@@ -1,8 +1,9 @@
 package net.tiny.feature.demo;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +51,14 @@ public class BrandImage {
         colors.put("gray", "#6c757d");
         colors.put("graydark", "#343a40");
         Collections.unmodifiableMap(colors);
+    }
+
+    public void setPath(String p) {
+        path = p;
+        Path home = Paths.get(path);
+        if (!Files.exists(home)) {
+            throw new IllegalArgumentException("Not found fontawesome path : " + path);
+        }
     }
 
     public int getCacheSize() {
@@ -118,19 +127,7 @@ public class BrandImage {
     }
 
     private final byte[] readResource(String resource) throws IOException {
-        InputStream is = getClass().getResourceAsStream(resource);
-        if (is == null) {
-            throw new IllegalArgumentException(String.format("Not found '%s'", resource));
-        }
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        byte[] buffer = new byte[4096];
-        int nread;
-        while ((nread = is.read(buffer)) > 0) {
-            baos.write(buffer, 0, nread);
-        }
-        baos.close();
-        is.close();
-        return baos.toByteArray();
+        return Files.readAllBytes(Paths.get(resource));
     }
 
     final byte[] generateImage(Fontawesome target) {

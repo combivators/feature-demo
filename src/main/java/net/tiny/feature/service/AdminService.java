@@ -140,7 +140,7 @@ public class AdminService extends BaseService<Admin> {
         }
         // Get account by user token
         Admin admin = entity.get();
-        final Setting setting = new SettingService(this).get();
+        final Setting setting = service(SettingService.class).get();
         // Create a JWT
         Map<String, Object> payload = new HashMap<String, Object>();
         payload.put("id", admin.getId());

@@ -2,6 +2,8 @@ package net.tiny.feature.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 
@@ -30,6 +32,10 @@ public class AccountServiceTest {
         ServiceLocator context = new ServiceLocator();
         context.bind("producer", producer, true);
 
+        SettingService settingService = new SettingService();
+        settingService.setContext(context);
+        context.bind("setting", settingService, true);
+
         EntityManager em = producer.getScoped(true);
 
         AccountService service = new AccountService(context);
@@ -54,6 +60,10 @@ public class AccountServiceTest {
         ServiceLocator context = new ServiceLocator();
         context.bind("producer", producer, true);
 
+        SettingService settingService = new SettingService();
+        settingService.setContext(context);
+        context.bind("setting", settingService, true);
+
         EntityManager em = producer.getScoped(true);
 
         AccountService service = new AccountService(context);
@@ -64,8 +74,8 @@ public class AccountServiceTest {
 
         //随机生成4位验证号码
         String code = AccountService.randomNumeric(4);
-        String encoded = Codec.encodeString("hoge@company".getBytes());
-        Optional<Email> email = service.email(account.getId(), "hoge@company", code
+        String encoded = Codec.encodeString("hoge@company.com".getBytes());
+        Optional<Email> email = service.email(account.getId(), "hoge@company.com", code
                 , callback -> {
                     if(callback.success()) {
                         System.out.println(callback.result());
@@ -76,11 +86,11 @@ public class AccountServiceTest {
                     }
                 });
         assertTrue(email.isPresent());
-        assertEquals("hoge@company", email.get().getAddress());
+        assertEquals("hoge@company.com", email.get().getAddress());
         assertFalse(email.get().getIsEnabled());
         assertNotNull(email.get().getAccount());
 
-        entity = service.findByEmail("hoge@company");
+        entity = service.findByEmail("hoge@company.com");
         assertTrue(entity.isPresent());
 
         entity = service.activation(code, encoded
@@ -100,4 +110,13 @@ public class AccountServiceTest {
         producer.dispose(em);
     }
 
+    @Test
+    public void testRandomNumeric() throws Exception {
+        int loop = 10000;
+        List<String> list = new ArrayList<>();
+        for (int i=0; i<loop; i++) {
+            String r = AccountService.randomNumeric(4);
+            assertFalse(list.contains(r));
+        }
+    }
 }
